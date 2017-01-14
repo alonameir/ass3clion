@@ -15,11 +15,11 @@ private:
     short opcode;
     short packetSize;
     short blockNumber;
-    vector<char> data;
     int index;
+    vector<char> data;
 
 public:
-    DATA(short packetSize);
+//    DATA(short packetSize);
     DATA();
     DATA(short packetSize, vector<char> data, short blockNumber );
     short getOpcode();
@@ -28,7 +28,6 @@ public:
     short getBlockNumber();
     void setBlockNumber(short blockNumber);
     vector<char> getData(); //TODO: CHECK IF WE NEED TO RETURN POINTER
-    void initDataArray(short size);
     void addToData(char b);
     void execute(BidiMessagingProtocolPacket p);
 

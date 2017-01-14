@@ -6,44 +6,35 @@
 #include <DATA.h>
 #include "../include/Packet.h"
 
-DATA::DATA(short packetSize): opcode(3), packetSize(packetSize), blockNumber(0),  {}
+//DATA::DATA(short packetSize): opcode(3), packetSize(packetSize), blockNumber(0), index(0), data() {}
 
-DATA::DATA():  {
+DATA::DATA():  opcode(3), packetSize(0), blockNumber(0), index(0), data()  {}
 
-}
-
-DATA::DATA(short packetSize, vector<char> data, short blockNumber) {
-
-}
 
 short DATA::getOpcode() {
-    return 0;
+    return 3;
 }
 
 short DATA::getPacketSize() {
-    return 0;
+    return packetSize;
 }
 
 void DATA::setPacketSize(short ps) {
-
+    this->packetSize=ps;
 }
 
 short DATA::getBlockNumber() {
-    return 0;
+    return blockNumber;
 }
 
 void DATA::setBlockNumber(short blockNumber) {
-
+    this->blockNumber=blockNumber;
 }
 
 vector<char> DATA::getData() {
-    return vector<char>();
-}
-
-void DATA::initDataArray(short size) {
-
+    return data;
 }
 
 void DATA::addToData(char b) {
-
+    data.push_back(b);
 }
