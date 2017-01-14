@@ -7,7 +7,7 @@ include_directories(include src bin)
 
 file(GLOB SOURCES "src/*.cpp" "include/*.h")
 
-add_executable(ass3clion ${SOURCES} include/Packet.h)
+add_executable(ass3clion ${SOURCES} include/Packet.h src/PacketWithString.cpp src/LOGRQ.cpp include/LOGRQ.h src/DELRQ.cpp include/DELRQ.h src/RRQ.cpp include/RRQ.h include/WRQ.cpp include/WRQ.h src/BidiMessagingProtocolPacket.cpp include/BidiMessagingProtocolPacket.h)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(Boost_FOUND)
