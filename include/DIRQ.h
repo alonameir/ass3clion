@@ -6,6 +6,9 @@
 #define ASS3CLION_DIRQ_H
 
 
+#include "Packet.h"
+#include "BidiMessagingProtocolPacket.h"
+
 class DIRQ: public Packet{
 private:
     short opcode;
