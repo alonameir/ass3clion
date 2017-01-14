@@ -1,0 +1,14 @@
+//
+// Created by romybu on 14/01/17.
+//
+
+#ifndef ASS3CLION_BIDIMESSAGINGPROTOCOLPACKET_H
+#define ASS3CLION_BIDIMESSAGINGPROTOCOLPACKET_H
+
+
+class BidiMessagingProtocolPacket {
+
+};
+
+
+#endif //ASS3CLION_BIDIMESSAGINGPROTOCOLPACKET_H

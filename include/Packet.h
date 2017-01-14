@@ -24,6 +24,14 @@ private:
 
 public:
     PacketWithString();
+    PacketWithString(string str);
     string getString();
 
+    char getLastByte();
+    virtual short getOpcode()=0;
+    virtual void execute(BidiMessagingProtocolPacket& p)=0;
+    virtual void setString(string& str);
+
 };
+
+
