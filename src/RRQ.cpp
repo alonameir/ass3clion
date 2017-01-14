@@ -7,7 +7,7 @@
 
 RRQ::RRQ(): opcode(1),PacketWithString(){}
 
-RRQ::RRQ(string str): opcode(1),PacketWithString(str){}
+RRQ::RRQ(string str): PacketWithString(str),opcode(1){}
 
 short RRQ:: getOpcode(){
     return opcode;

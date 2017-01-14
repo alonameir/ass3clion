@@ -6,7 +6,7 @@
 
 DELRQ::DELRQ(): opcode(8),PacketWithString(){}
 
-DELRQ::DELRQ(string str): opcode(8),PacketWithString(str){}
+DELRQ::DELRQ(string str): PacketWithString(str),opcode(8){}
 
 short DELRQ:: getOpcode(){
     return opcode;

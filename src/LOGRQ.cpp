@@ -6,7 +6,7 @@
 
 LOGRQ::LOGRQ(): opcode(7),PacketWithString(){}
 
-LOGRQ::LOGRQ(string str): opcode(7),PacketWithString(str){}
+LOGRQ::LOGRQ(string str): PacketWithString(str),opcode(7){}
 
 short LOGRQ:: getOpcode(){
     return opcode;
