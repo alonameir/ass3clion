@@ -5,6 +5,7 @@
 #ifndef ASS3CLION_DELRQ_H
 #define ASS3CLION_DELRQ_H
 #include "Packet.h"
+#include "BidiMessagingProtocolPacket.h"
 
 class DELRQ : public PacketWithString {
 private:
