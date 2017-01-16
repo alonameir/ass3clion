@@ -47,7 +47,8 @@ public:
 	
     // Close down the connection properly.
     void close();
- 
+
+    void sendPacket(Packet p);
 }; //class ConnectionHandler
  
 #endif
