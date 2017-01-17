@@ -5,6 +5,7 @@
 #include "Packets/Packet.h"
 
 PacketWithString::PacketWithString(): s(""), lastByte('0'){}
+PacketWithString::~PacketWithString(){};
 PacketWithString::PacketWithString(string str): s(str), lastByte('0'){};
 
 string PacketWithString:: getString(){

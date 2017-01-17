@@ -17,10 +17,10 @@ private:
     char byte;
 public:
     ERROR();
+    ~ERROR();
     short getOpcode();
     short getErrorcode();
     void setErrorcode(short errcode);
     string getStr();
     void setStr(string msg);
-//    void execute (BidiMessagingProtocolPacket& p);
 };

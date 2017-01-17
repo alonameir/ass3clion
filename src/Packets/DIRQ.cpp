@@ -12,6 +12,6 @@ short DIRQ::getOpcode() {
 
 DIRQ::DIRQ() : opcode(10) {}
 
-void DIRQ:: execute(BidiMessagingProtocolPacket& p){
-    p.execute(this);
+
+DIRQ::~DIRQ() {
 }

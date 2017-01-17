@@ -4,7 +4,6 @@
 
 #include <boost/regex/config/cwchar.hpp>
 #include <string>
-#include "BidiMessagingProtocolPacket.h"
 
 #ifndef ASS3CLION_PACKET_H
 #define ASS3CLION_PACKET_H
@@ -15,7 +14,6 @@ using namespace std;
 class Packet{
 public:
     virtual short getOpcode()=0;
-    virtual void execute(BidiMessagingProtocolPacket& p)=0;
 };
 
 class PacketWithString: public Packet{
@@ -27,11 +25,10 @@ public:
     PacketWithString();
     PacketWithString(string str);
     string getString();
-
+    ~PacketWithString();
     char getLastByte();
     virtual short getOpcode()=0;
-    virtual void execute(BidiMessagingProtocolPacket& p)=0;
-    virtual void setString(string& str);
+    virtual void setString(string& str)=0;
 
 };
 

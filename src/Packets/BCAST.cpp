@@ -27,3 +27,5 @@ string BCAST::getFileName() {
 void BCAST::setFileName(string fileName) {
     this->fileName=fileName;
 }
+
+BCAST::~BCAST() {}

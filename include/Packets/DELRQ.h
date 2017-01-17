@@ -12,9 +12,9 @@ private:
     short opcode;
 public:
     DELRQ();
+    ~DELRQ();
     DELRQ(string str);
     short getOpcode();
-//    void execute(BidiMessagingProtocolPacket p);
 };
 
 

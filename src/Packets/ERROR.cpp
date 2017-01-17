@@ -26,3 +26,7 @@ string ERROR::getStr() {
 void ERROR::setStr(string msg) {
     this->str=msg;
 }
+
+ERROR::~ERROR() {
+
+}

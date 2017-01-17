@@ -73,27 +73,44 @@ void KeyboardTask::buildRRQ(string name){
     /** in this function, we get a name which is the fileName we want to read.
      * what we should do here is send a RRQ packet to "sendPacket" in connection Handler.
      * **/
-    RRQ toSend(name);
-    connectionHandler.sendPacket(toSend);
+    RRQ* toSend=new RRQ(name);
+    connectionHandler.setLastSent(1);
+    connectionHandler.setFileUpload(name);
+    connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildWRQ(string name){
-    WRQ toSend(name);
-    connectionHandler.sendPacket(toSend);
+    WRQ* toSend=new WRQ(name);
+    connectionHandler.setLastSent(2);
+    connectionHandler.setFileDownload(name);
+    connectionHandler.sendPacket(*toSend);
 }
 
-void KeyboardTask::buildACK(string name) {
-    ACK toSend((short)(stoi(name)));
-    connectionHandler.sendPacketACK(toSend);
+void KeyboardTask::buildDIRQ() {
+    DIRQ* toSend=new DIRQ();
+    connectionHandler.setLastSent(6);
+    connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildLOGRQ(string name) {
-    LOGRQ toSend(name);
-    connectionHandler.sendPacket(toSend);
+    LOGRQ* toSend=new LOGRQ(name);
+    connectionHandler.setLastSent(7);
+    connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildDELRQ(string name) {
-    DELRQ toSend(name);
-    connectionHandler.sendPacket(toSend);
+    DELRQ* toSend= new DELRQ(name);
+    connectionHandler.setLastSent(8);
+    connectionHandler.sendPacket(*toSend);
 }
 
+void KeyboardTask::buildDISC() {
+    DISC* toSend=new DISC();
+    connectionHandler.setLastSent(10);
+    connectionHandler.sendPacket(*toSend);
+}
+
+KeyboardTask::~KeyboardTask() {
+    delete connectionHandler;
+    delete _mutex;
+}

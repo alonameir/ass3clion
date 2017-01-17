@@ -13,9 +13,10 @@ private:
 
 public:
     ACK();
+    ~ACK();
     ACK(short blockNumber);
     short getOpcode();
     short getBlockNumber();
     void setBlockNumber(short blockNumber);
-//    void execute(BidiMessagingProtocolPacket p);
+    void execute(BidiMessagingProtocolPacket p);
 };

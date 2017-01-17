@@ -7,6 +7,7 @@
 #include "Packets/Packet.h"
 
 ACK::ACK(): opcode(4), blockNumber(-1) {}
+ACK::~ACK(){}
 
 ACK::ACK(short blockNumber): opcode(4), blockNumber(blockNumber) {}
 
@@ -22,6 +23,3 @@ void ACK::setBlockNumber(short blockNumber) {
     this->blockNumber=blockNumber;
 }
 
-//void ACK::execute(BidiMessagingProtocolPacket p){
-//    p.execute(this);
-//}

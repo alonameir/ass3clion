@@ -5,31 +5,40 @@
 #include <string>
 #include <connectionHandler.h>
 #include <SocketTask.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/pthread/mutex.hpp>
+
+
 using namespace std;
 
-SocketTask::SocketTask(ConnectionHandler c) : handler(c), bytes(), bolckNumber(0) {}
+SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
+        handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
+        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){}
+
 
 ~SocketTask();
 
 void SocketTask::run(){
-    while(1){
-        bytes={''};
-        bool isOpcodeGet=handler.getBytes(bytes,2);
-        if(isOpcodeGet)
-            short opCode=bytesToShort(bytes);
-            switch(opCode){
-                case 4:{
-                    handelWithAck();
-                }:
-                case 5:{
+    int i=1;
+    while(i==1) {
+        bytes = {''};
+        bool isOpcodeGet = handler.getBytes(bytes, 2);
+        if (isOpcodeGet) {
+            short opCode = bytesToShort(bytes);
+            switch (opCode) {
+                case 3: {
+                    handelWithDATA();
+                }
+                case 4: {
+                   i= handelWithAck();
+                }
+                case 5: {
                     handelWithError();
                 }
-                case 9:{
+                case 9: {
                     handelWithBCAST();
                 }
             }
-        else{
-            //todo:send an error
         }
     }
 }
@@ -47,23 +56,31 @@ void  SocketTask:: shortToBytes(short num, char* bytesArr)
     bytesArr[1] = (num & 0xFF);
 }
 
-void SocketTask:: handelWithAck(){
+int SocketTask:: handelWithAck(){
     bytes={''};
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
     if(isACKBlockNumGet){
-        short block=bytesToShort(bytes);
-        if(block==0) {
-            cout<< "ACK 0"  << endl;;
-            if(handler.shouldTerminate())handler.close();
+        currentNumOfBlockACK=bytesToShort(bytes);
+        cout<< "ACK " << currentNumOfBlockACK <<endl;
+        if(currentNumOfBlockACK==0) {
+            if(handler.getLastSent()==10){
+                handler.close();
+                return 0;
+            }
+            return 1;
         }
-        else if(block!=0 && blockNumber+1==block){
-            if (block==1){
-                if (handler.getFileUpload()!= nullptr){
-
-                }
+        else if(currentNumOfBlockACK!=0 && blockNumber+1==currentNumOfBlockACK){
+            if (handler.getLastSent()==2 && !upLoadfinished){
+                keepUploading(currentNumOfBlockACK);
+                return 1;
+            }
+            else if(upLoadfinished){
+                blockNumber=0;
+                return 1;
             }
         }
     }
+    return 1;
 }
 
 void  SocketTask:: handelWithError(){
@@ -93,31 +110,89 @@ void SocketTask:: handelWithBCAST(){
     }
 }
 
-//
-//size_t result;
-//FILE* file=fopen("loston.mp3","rb");
-//fseek (file , 0 , SEEK_END);
-//long lSize = ftell (file);
-//rewind (file);
-//char* temp4=new char[lSize];
-//result=fread(temp4,1,lSize,file);
-//fclose(file);
-//
-//
-//char towrite[lSize-2000];
-//for (int i=0 ; i<lSize-2000; i++){
-//towrite[i]=temp4[i];
-//}
-//cout<< sizeof(towrite)<<endl;
-//FILE* file2=fopen("cd.mp3","ab");
-//cout<< sizeof(char)<<endl;
-//fwrite(towrite, 1, sizeof(towrite)-1 ,file2);
-//char contread[2000];
-//int counter=0;
-//for (int i=lSize-2000;i<lSize;i++){
-//contread[counter]=temp4[i];
-//counter++;
-//}
-//fwrite(contread,1, sizeof(contread)-1,file2);
-//fclose(file2);
+void SocketTask:: keepUploading(short currentBlock){
+    if (currentBlock==1){
+        FILE * file=fopen(handler.getFileUpload(),"rb");
+        fseek (file , 0 , SEEK_END);
+        sizeToSend=ftell(file);///tells the size of the file
+        rewind(file);
+        toSend=new char[sizeToSend];
+        fread(toSend,1, sizeToSend, file);
+        fclose(file);
+    }
+    if(sizeToSend-counterSend<512){
+        char sending[sizeToSend-counterSend];
+        int size=sizeToSend-counterSend;
+        for(int i=0;i<size; i++){
+            sending[i]=toSend[counterSend];
+            counterSend++;
+        }
+        handler.sendData(size, sending, blockNumber);
+        cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
+        cout<< "WRQ "<<handler.getFileUpload() << " complete"<< endl;
+        handler.setFileUpload("");
+        upLoadfinished=true;
+        counterSend=0;
+        delete[] sending;
+    }
+    else{
+        char sending[512];
+        for(int i=0;i<512; i++){
+            sending[i]=toSend[counterSend];
+            counterSend++;
+        }
+        handler.sendData(512, sending, blockNumber);
+        cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
+        delete[] sending;
+    }
+}
+
+void SocketTask::handelWithDATA() {
+    bytes={''};
+    bool isPacketSize=handler.getBytes(bytes,2);
+    bytes={''};
+    bool isBlockNum=handler.getBytes(bytes,2);
+    bytes={''};
+    bool isDataGet=handler.getBytes(bytes,2);
+    if((isPacketSize && isPacketSize) && isDataGet ){
+        packetSizeData=bytesToShort(bytes);
+        blockNumber=bytesToShort(bytes);
+        if(blockNumber== currentNumOfBlockACK-1)
+        if(handler.getLastSent()==6){
+            if(blockNumber==1){
+                dataFile=fopen("allTheFilesInServer.txt","ab");//TODO: check if this is currect
+                counterSend=0;
+            }
+            keepHanderWithData();
+        }else if(handler.getLastSent()==1){
+            if(blockNumber){
+                dataFile=fopen(handler.getFileDownload(),"ab");
+                counterSend=0;
+            }
+            keepHanderWithData();
+        }
+    }
+}
+
+void SocketTask:: keepHanderWithData(){
+    char addToFile[packetSizeData];
+    for(int i=0;i<packetSizeData; i++){
+        addToFile[i]=bytes[counterSend];
+        counterSend++;
+    }
+    fwrite(addToFile,1, sizeof(addToFile),dataFile);
+    if(handler.getLastSent()==1)
+        cout<< "RRQ "<<handler.getFileDownload() << " " <<blockNumber<< endl;
+    delete [] addToFile;
+    if(packetSizeData<512){
+        if(handler.getLastSent()==1)
+            cout<< "RRQ "<<handler.getFileDownload() << " complete" << endl;
+        else{
+            cout<< "Dirq "<<"allTheFilesInServer.txt" << " complete" << endl;
+        }
+        fclose(dataFile);
+    }
+
+}
+
 

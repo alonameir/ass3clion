@@ -11,7 +11,9 @@ LOGRQ::LOGRQ(string str): PacketWithString(str),opcode(7){}
 short LOGRQ:: getOpcode(){
     return opcode;
 }
-void LOGRQ:: execute(BidiMessagingProtocolPacket& p){
-    p.execute(this);
+
+LOGRQ::~LOGRQ() {
+
 }
+
 

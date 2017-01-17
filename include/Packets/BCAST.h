@@ -15,14 +15,13 @@ private:
     char lastByte;
 public:
     BCAST();
+    ~BCAST();
     BCAST(char deletedOrAdded, string str);
     short getOpcode();
     char getDeletedOrAdded();
     void setDeletedOrAdded(char deletedOrAdded);
     string getFileName();
     void setFileName(string fileName);
-//    void execute(BidiMessagingProtocolPacket p);
-
 };
 
 

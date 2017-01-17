@@ -20,17 +20,12 @@ private:
     string command;
     string name;
 public:
-
     KeyboardTask(ConnectionHandler c, boost::mutex* mutex);
-
+    ~KeyboardTask();
     void run();
-
     void setCommandAndName(string line);
-
     void buildRRQ(string name);
-
     void buildWRQ(string name);
-
     void buildACK(string blockNumber);
 
     void buildLOGRQ(string name);

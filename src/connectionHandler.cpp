@@ -12,7 +12,7 @@ using std::cerr;
 using std::endl;
 using std::string;
  
-ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_) , shouldTerminate(false){}
+ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){}
     
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -111,12 +111,12 @@ void shortToBytes(short num, char* bytesArr){
     bytesArr[1] = (num & 0xFF);
 }
 
-void ConnectionHandler::sendPacket(PacketWithString p){/** THIS METHOD SHOULD BE BLOCKING **/
+void ConnectionHandler:: sendPacket(PacketWithString p){/** THIS METHOD SHOULD BE BLOCKING **/
     char* opcode;
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
     bool firstSend=sendBytes(opcode,2);
-    bool secondSend=sendFrameAscii(frame,'\0');
+    bool secondSend=sendFrameAscii(frame,'0');
     if (!firstSend || !secondSend){ } /** DO SOMETHING?? **/
 }
 
@@ -132,8 +132,8 @@ void ConnectionHandler::sendPacketDISC() {
     shortToBytes(10,opcode);
     bool isSent=sendBytes(opcode,2);
     if (!isSent){} /** DO SOMETHING?? **/
-    shouldTerminate=true;
 }
+
 void ConnectionHandler::sendPacketACK(ACK p) {
     char* opcode;
     shortToBytes(4,opcode);
@@ -161,4 +161,24 @@ string &ConnectionHandler::getFileDownload()  {
 
 void ConnectionHandler::setFileDownload( string &fileDownload) {
     ConnectionHandler::fileDownload = fileDownload;
+}
+
+void ConnectionHandler::sendData(int size,char &buff[], short block) {///check where adding one to block number
+    char twoBytes[2];//check if char*
+    shortToBytes((short)3,twoBytes);//opCode send
+    sendBytes(twoBytes,2);
+    shortToBytes((short)size,twoBytes);//packetsize send
+    sendBytes(twoBytes,2);
+    shortToBytes(block+1,twoBytes);//block number send  ///!!!!!!!!!!!!!!!!!!!!!!
+    sendBytes(twoBytes,2);
+    sendBytes(buff,size);
+    delete[] twoBytes;
+}
+
+short ConnectionHandler::getLastSent()  {
+    return lastSent;
+}
+
+void ConnectionHandler::setLastSent(short lastSent) {
+    ConnectionHandler::lastSent = lastSent;
 }
