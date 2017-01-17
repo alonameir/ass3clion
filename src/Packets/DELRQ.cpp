@@ -2,7 +2,7 @@
 // Created by romybu on 14/01/17.
 //
 
-#include "DELRQ.h"
+#include "Packets/DELRQ.h"
 
 DELRQ::DELRQ(): opcode(8),PacketWithString(){}
 

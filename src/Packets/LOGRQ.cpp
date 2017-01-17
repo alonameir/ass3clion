@@ -2,7 +2,7 @@
 // Created by romybu on 14/01/17.
 //
 
-#include "LOGRQ.h"
+#include "Packets/LOGRQ.h"
 
 LOGRQ::LOGRQ(): opcode(7),PacketWithString(){}
 

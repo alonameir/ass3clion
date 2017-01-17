@@ -2,7 +2,7 @@
 // Created by romybu on 14/01/17.
 //
 
-#include "RRQ.h"
+#include "Packets/RRQ.h"
 
 
 RRQ::RRQ(): opcode(1),PacketWithString(){}

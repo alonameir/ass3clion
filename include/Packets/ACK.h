@@ -3,7 +3,7 @@
 #define ASS3CLION_ACK_H
 
 #endif //ASS3CLION_ACK_H
-#include "../include/Packet.h"
+#include "Packet.h"
 
 class ACK: public Packet {
 

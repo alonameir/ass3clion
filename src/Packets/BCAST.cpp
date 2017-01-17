@@ -2,7 +2,7 @@
 // Created by alonam on 1/14/17.
 //
 
-#include "BCAST.h"
+#include "Packets/BCAST.h"
 
 BCAST::BCAST(): opcode(9), deletedOrAdded(-1), fileName(""), lastByte('0') {}
 

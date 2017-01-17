@@ -2,7 +2,7 @@
 // Created by romybu on 14/01/17.
 //
 
-#include "DIRQ.h"
+#include "Packets/DIRQ.h"
 
 short DIRQ::getOpcode() {
     return 10;
