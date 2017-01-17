@@ -66,6 +66,7 @@ int SocketTask:: handelWithAck(){
             if(handler.getLastSent()==10){
                 handler.close();
                 cout<< "DISC " <<endl;
+                handler.shouldTerminate=true;
                 return 0;
             }
             return 1;
