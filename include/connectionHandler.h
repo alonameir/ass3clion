@@ -16,12 +16,11 @@ private:
     string fileUpload;
     string fileDownload;
     short lastSent;
+
 public:
+    bool shouldTerminate;
     short getLastSent() ;
-
     void setLastSent(short lastSent);
-
-public:
     ConnectionHandler(std::string host, short port);
     ~ConnectionHandler();
  
