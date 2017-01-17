@@ -34,9 +34,9 @@ int main (int argc, char *argv[]) {
 
     boost::thread th1(boost::bind(&KeyboardTask::run, &task1));
     task2.run();
-//    boost::thread th2(boost::bind(&SocketTask::run, &task2));
+    boost::thread th2(boost::bind(&SocketTask::run, &task2));
     th1.join();
-//    th2.join();
+    th2.join();
 
     return 0;
 }

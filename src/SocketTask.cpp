@@ -65,6 +65,7 @@ int SocketTask:: handelWithAck(){
         if(currentNumOfBlockACK==0) {
             if(handler.getLastSent()==10){
                 handler.close();
+                cout<< "DISC " <<endl;
                 return 0;
             }
             return 1;
@@ -193,6 +194,11 @@ void SocketTask:: keepHanderWithData(){
         fclose(dataFile);
     }
 
+}
+
+SocketTask::~SocketTask() {
+    delete handler;
+    delete _mutex;
 }
 
 
