@@ -83,11 +83,6 @@ void KeyboardTask::buildWRQ(string name){
     connectionHandler.sendPacket(*toSend);
 }
 
-void KeyboardTask::buildACK(string blockNumber) {
-    ACK* toSend= new ACK((short)stoi(blockNumber));
-    connectionHandler.sendPacket(*toSend);
-}
-
 void KeyboardTask::buildDIRQ() {
     DIRQ* toSend=new DIRQ();
     connectionHandler.sendPacket(*toSend);

@@ -48,7 +48,14 @@ public:
     // Close down the connection properly.
     void close();
 
-    void sendPacket(Packet& p);
+    // Sends a packet of type PacketWithString
+    void sendPacket(PacketWithString& p);
+
+    //sends a packet of type DISC
+    void sendPacket(DISC& p);
+
+    //sends a packet of type DIRQ
+    void sendPacket(DIRQ& p);
 }; //class ConnectionHandler
  
 #endif
