@@ -104,5 +104,7 @@ void ConnectionHandler::close() {
 }
 
 void ConnectionHandler:: sendPacket(Packet& p){//THIS METHOD SHOULD BE BLOCKING
+    if (p.getOpcode() == 1){// this is an RRQ,WRQ,DELRQ,LOGRQ
 
+    }
 }
