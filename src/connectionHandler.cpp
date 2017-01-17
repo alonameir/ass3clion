@@ -1,6 +1,7 @@
 #include <Packets/Packet.h>
 #include <Packets/DIRQ.h>
 #include <Packets/DISC.h>
+#include <Packets/ACK.h>
 #include "connectionHandler.h"
 
 using boost::asio::ip::tcp;
@@ -112,29 +113,38 @@ void shortToBytes(short num, char* bytesArr){
     bytesArr[1] = (num & 0xFF);
 }
 
-void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD BE BLOCKING **/
+void ConnectionHandler:: sendPacket(PacketWithString p){/** THIS METHOD SHOULD BE BLOCKING **/
     char* opcode;
     shortToBytes(p.getOpcode(),opcode);
-    char delimeter='0';
     string frame=p.getString();
     bool firstSend=sendBytes(opcode,2);
     bool secondSend=sendFrameAscii(frame,'0');
     if (!firstSend || !secondSend){ } /** DO SOMETHING?? **/
 }
 
-void ConnectionHandler::sendPacket(DIRQ &p) {
+void ConnectionHandler::sendPacketDIRQ() {
     char* opcode;
-    shortToBytes(p.getOpcode(),opcode);
+    shortToBytes(6,opcode);
     bool isSent=sendBytes(opcode,2);
     if (!isSent){} /** DO SOMETHING?? **/
 }
 
-void ConnectionHandler::sendPacket(DISC &p) {
+void ConnectionHandler::sendPacketDISC() {
     char* opcode;
-    shortToBytes(p.getOpcode(),opcode);
+    shortToBytes(10,opcode);
     bool isSent=sendBytes(opcode,2);
     if (!isSent){} /** DO SOMETHING?? **/
 }
+
+void ConnectionHandler::sendPacketACK(ACK p) {
+    char* opcode;
+    shortToBytes(4,opcode);
+    char* blockNum;
+    shortToBytes(p.getBlockNumber(),blockNum);
+    sendBytes(opcode,2);
+    sendBytes(blockNum,2);
+    }
+
 
 string &ConnectionHandler::getFileUpload()  {
     return fileUpload;

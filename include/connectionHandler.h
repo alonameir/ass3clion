@@ -16,14 +16,14 @@ private:
     string fileUpload;
     string fileDownload;
     short lastSent;
-
 public:
     bool shouldTerminate;
     short getLastSent() ;
     void setLastSent(short lastSent);
     ConnectionHandler(std::string host, short port);
     ~ConnectionHandler();
- 
+
+
     // Connect to the remote machine
     bool connect();
  
@@ -55,13 +55,14 @@ public:
     void close();
 
     // Sends a packet of type PacketWithString
-    void sendPacket(PacketWithString& p);
+    void sendPacket(PacketWithString p);
 
     //sends a packet of type DISC
-    void sendPacket(DISC& p);
+    void sendPacketDISC();
+    void sendPacketACK(ACK p);
 
     //sends a packet of type DIRQ
-    void sendPacket(DIRQ& p);
+    void sendPacketDIRQ();
 
 
     string &getFileUpload();
@@ -71,6 +72,8 @@ public:
     string &getFileDownload();
 
     void setFileDownload( string &fileDownload);
+
+    void sendPacketDIRQ();
 
     void sendData(int, char& buff[],short);
 

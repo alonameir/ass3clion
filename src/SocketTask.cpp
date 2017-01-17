@@ -28,15 +28,19 @@ void SocketTask::run(){
             switch (opCode) {
                 case 3: {
                     handelWithDATA();
+                    break;
                 }
                 case 4: {
                    i= handelWithAck();
+                    break;
                 }
                 case 5: {
                     handelWithError();
+                    break;
                 }
                 case 9: {
                     handelWithBCAST();
+                    break;
                 }
             }
         }

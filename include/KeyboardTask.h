@@ -28,11 +28,8 @@ public:
     void buildWRQ(string name);
     void buildACK(string blockNumber);
 
-    void buildDIRQ();
-
     void buildLOGRQ(string name);
 
     void buildDELRQ(string name);
 
-    void buildDISC();
 };
