@@ -1,8 +1,4 @@
 #include <Packets/Packet.h>
-#include <Packets/DATA.h>
-#include <Packets/ACK.h>
-#include <Packets/DIRQ.h>
-#include <Packets/DISC.h>
 #include "connectionHandler.h"
 
 using boost::asio::ip::tcp;
@@ -12,9 +8,9 @@ using std::cout;
 using std::cerr;
 using std::endl;
 using std::string;
-
-ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){}
-
+ 
+ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_) , shouldTerminate(false){}
+    
 ConnectionHandler::~ConnectionHandler() {
     close();
 }
