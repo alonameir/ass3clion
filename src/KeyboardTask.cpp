@@ -18,7 +18,7 @@ KeyboardTask::KeyboardTask
         (ConnectionHandler c, boost::mutex* mutex): connectionHandler(c), _mutex(mutex), command(""), name("") {}
 
 void KeyboardTask:: run(){
-    while (1) {
+    while (!connectionHandler.shouldTerminate()) { /** maybe this should be an infinite loop?? **/
         /**read a line from input:**/
         string line;
         getline(cin, line);
@@ -34,7 +34,7 @@ void KeyboardTask:: run(){
             buildACK(name);
         }
         else if (command.compare("DIRQ")==0){
-            buildDIRQ();
+            connectionHandler.sendPacketDIRQ();
         }
         else if (command.compare("LOGRQ")==0){
             buildLOGRQ(name);
@@ -43,8 +43,7 @@ void KeyboardTask:: run(){
             buildDELRQ(name);
         }
         else if (command.compare("DISC")==0){
-            buildDISC();
-            break; //here i should exit the loop and disconnect once i get an ACK in return
+            connectionHandler.sendPacketDISC();
         }
         else{//which means the command is illegal
             cout << "Illegal command as input. Please type again." <<endl;
@@ -74,31 +73,28 @@ void KeyboardTask::buildRRQ(string name){
     /** in this function, we get a name which is the fileName we want to read.
      * what we should do here is send a RRQ packet to "sendPacket" in connection Handler.
      * **/
-    RRQ* toSend=new RRQ(name);
-    connectionHandler.sendPacket(*toSend);
+    RRQ toSend(name);
+    connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildWRQ(string name){
-    WRQ* toSend=new WRQ(name);
-    connectionHandler.sendPacket(*toSend);
+    WRQ toSend(name);
+    connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildDIRQ() {
-    DIRQ* toSend=new DIRQ();
-    connectionHandler.sendPacket(*toSend);
+    connectionHandler.sendPacketDIRQ();
 }
 
 void KeyboardTask::buildLOGRQ(string name) {
-    LOGRQ* toSend=new LOGRQ(name);
-    connectionHandler.sendPacket(*toSend);
+    LOGRQ toSend(name);
+    connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildDELRQ(string name) {
-    DELRQ* toSend= new DELRQ(name);
-    connectionHandler.sendPacket(*toSend);
+    DELRQ toSend(name);
+    connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildDISC() {
-    DISC* toSend=new DISC();
-    connectionHandler.sendPacket(*toSend);
 }
