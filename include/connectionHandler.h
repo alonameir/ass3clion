@@ -12,10 +12,15 @@ private:
 	const std::string host_;
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
-	tcp::socket socket_; 
-    bool shouldTerminate;
+	tcp::socket socket_;
     string fileUpload;
     string fileDownload;
+    short lastSent;
+public:
+    short getLastSent() ;
+
+    void setLastSent(short lastSent);
+
 public:
     ConnectionHandler(std::string host, short port);
     virtual ~ConnectionHandler();
@@ -62,11 +67,13 @@ public:
 
     string &getFileUpload();
 
-    void setFileUpload( string &fileUpload);
+    void setFileUpload( string fileUpload);
 
     string &getFileDownload();
 
     void setFileDownload( string &fileDownload);
+
+    void sendData(int, char& buff[],short);
 
 }; //class ConnectionHandler
 

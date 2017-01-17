@@ -12,16 +12,25 @@ class SocketTask{
 private:
     ConnectionHandler handler;
     char bytes[];
-    bool int blockNumber;
+    short blockNumber;
+    char* toSend;
+    bool upLoadfinished;
+    long sizeToSend;
+    long counterSend;
+    short packetSizeData;
+    short currentNumOfBlockACK;
+    FILE * dataFile;
 
     short bytesToShort(char* bytesArr);
     void shortToBytes(short num, char* bytesArr);
-    void handelWithAck();
+    int handelWithAck();
     void handelWithError();
     void handelWithBCAST();
     void handelWithDATA();
+    void keepUploading(short currentBlock);
+    void keepHanderWithData();
 public:
-    SocketTask(ConnectionHandler c);
+    SocketTask(ConnectionHandler& c);
     ~SocketTask();
     void run();
 };
