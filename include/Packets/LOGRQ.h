@@ -16,7 +16,6 @@ public:
     ~LOGRQ();
     LOGRQ(string str);
     short getOpcode();
-    void execute(BidiMessagingProtocolPacket p);
 };
 
 

@@ -13,7 +13,3 @@ short DELRQ:: getOpcode(){
 }
 
 DELRQ::~DELRQ() {}
-
-void DELRQ:: execute(BidiMessagingProtocolPacket& p){
-    p.execute(this);
-}

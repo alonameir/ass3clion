@@ -16,7 +16,4 @@ LOGRQ::~LOGRQ() {
 
 }
 
-void LOGRQ:: execute(BidiMessagingProtocolPacket p){
-    //p.execute(this);
-}
 

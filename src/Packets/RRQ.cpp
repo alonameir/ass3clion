@@ -16,7 +16,3 @@ short RRQ:: getOpcode(){
 RRQ::~RRQ() {
 
 }
-
-void RRQ:: execute(BidiMessagingProtocolPacket p){
-    p.execute(this);
-}

@@ -15,7 +15,6 @@ public:
     ~RRQ();
     RRQ(string str);
     short getOpcode();
-    void execute(BidiMessagingProtocolPacket p);
 };
 
 

@@ -14,10 +14,6 @@ short DISC::getOpcode() {
 
 DISC::DISC() : opcode(10) {}
 
-void DISC:: execute(BidiMessagingProtocolPacket& p){
-    p.execute(this);
-}
-
 DISC::~DISC() {
 
 }

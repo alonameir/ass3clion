@@ -7,7 +7,6 @@
 
 
 #include "Packet.h"
-#include "BidiMessagingProtocolPacket.h"
 
 class DIRQ: public Packet{
 private:
@@ -16,7 +15,6 @@ public:
     DIRQ();
     ~DIRQ();
     short getOpcode();
-    void execute(BidiMessagingProtocolPacket& p);
 };
 
 #endif //ASS3CLION_DIRQ_H

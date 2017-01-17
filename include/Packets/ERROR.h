@@ -23,5 +23,4 @@ public:
     void setErrorcode(short errcode);
     string getStr();
     void setStr(string msg);
-    void execute (BidiMessagingProtocolPacket& p);
 };

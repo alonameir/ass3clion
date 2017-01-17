@@ -22,8 +22,6 @@ public:
     void setDeletedOrAdded(char deletedOrAdded);
     string getFileName();
     void setFileName(string fileName);
-    void execute(BidiMessagingProtocolPacket p);
-
 };
 
 
