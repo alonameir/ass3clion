@@ -21,6 +21,7 @@ private:
     string name;
 public:
     KeyboardTask(ConnectionHandler c, boost::mutex* mutex);
+    ~KeyboardTask();
     void run();
     void setCommandAndName(string line);
     void buildRRQ(string name);

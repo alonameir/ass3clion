@@ -110,3 +110,8 @@ void KeyboardTask::buildDISC() {
     connectionHandler.setLastSent(10);
     connectionHandler.sendPacket(*toSend);
 }
+
+KeyboardTask::~KeyboardTask() {
+    delete connectionHandler;
+    delete _mutex;
+}
