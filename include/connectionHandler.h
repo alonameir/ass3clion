@@ -16,6 +16,7 @@ private:
     bool shouldTerminate;
     string fileUpload;
     string fileDownload;
+
 public:
     ConnectionHandler(std::string host, short port);
     virtual ~ConnectionHandler();
@@ -55,6 +56,7 @@ public:
 
     //sends a packet of type DISC
     void sendPacketDISC();
+    void sendPacketACK(ACK p);
 
     //sends a packet of type DIRQ
     void sendPacket(DIRQ& p);
@@ -70,7 +72,6 @@ public:
 
     void sendPacketDIRQ();
 
-    bool shouldTerminate();
 }; //class ConnectionHandler
 
 
