@@ -29,6 +29,6 @@ public:
     void setBlockNumber(short blockNumber);
     vector<char> getData(); //TODO: CHECK IF WE NEED TO RETURN POINTER
     void addToData(char b);
-    void execute(BidiMessagingProtocolPacket p);
+//    void execute(BidiMessagingProtocolPacket p);
 
 };

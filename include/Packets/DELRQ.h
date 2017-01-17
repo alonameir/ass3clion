@@ -14,7 +14,7 @@ public:
     DELRQ();
     DELRQ(string str);
     short getOpcode();
-    void execute(BidiMessagingProtocolPacket p);
+//    void execute(BidiMessagingProtocolPacket p);
 };
 
 
