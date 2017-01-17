@@ -86,11 +86,6 @@ void KeyboardTask::buildWRQ(string name){
     connectionHandler.sendPacket(*toSend);
 }
 
-void KeyboardTask::buildDIRQ() {
-    DIRQ* toSend=new DIRQ();
-    connectionHandler.setLastSent(6);
-    connectionHandler.sendPacket(*toSend);
-}
 
 void KeyboardTask::buildLOGRQ(string name) {
     LOGRQ* toSend=new LOGRQ(name);
@@ -104,11 +99,6 @@ void KeyboardTask::buildDELRQ(string name) {
     connectionHandler.sendPacket(*toSend);
 }
 
-void KeyboardTask::buildDISC() {
-    DISC* toSend=new DISC();
-    connectionHandler.setLastSent(10);
-    connectionHandler.sendPacket(*toSend);
-}
 
 KeyboardTask::~KeyboardTask() {
     delete connectionHandler;
