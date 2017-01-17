@@ -20,18 +20,21 @@ private:
     string command;
     string name;
 public:
-    KeyboardTask(ConnectionHandler c, boost::mutex* mutex);
-    void run();
-    void setCommandAndName(string line);
-    void buildRRQ(string name);
-    void buildWRQ(string name);
-    void buildACK(string blockNumber);
 
-    void buildDIRQ();
+    KeyboardTask(ConnectionHandler c, boost::mutex* mutex);
+
+    void run();
+
+    void setCommandAndName(string line);
+
+    void buildRRQ(string name);
+
+    void buildWRQ(string name);
+
+    void buildACK(string blockNumber);
 
     void buildLOGRQ(string name);
 
     void buildDELRQ(string name);
 
-    void buildDISC();
 };

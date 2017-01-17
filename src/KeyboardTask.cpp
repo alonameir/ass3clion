@@ -18,7 +18,7 @@ KeyboardTask::KeyboardTask
         (ConnectionHandler c, boost::mutex* mutex): connectionHandler(c), _mutex(mutex), command(""), name("") {}
 
 void KeyboardTask:: run(){
-    while (!connectionHandler.shouldTerminate()) { /** maybe this should be an infinite loop?? **/
+    while (1) { /** maybe this should be an infinite loop?? **/
         /**read a line from input:**/
         string line;
         getline(cin, line);
@@ -82,8 +82,9 @@ void KeyboardTask::buildWRQ(string name){
     connectionHandler.sendPacket(toSend);
 }
 
-void KeyboardTask::buildDIRQ() {
-    connectionHandler.sendPacketDIRQ();
+void KeyboardTask::buildACK(string name) {
+    ACK toSend((short)(stoi(name)));
+    connectionHandler.sendPacketACK(toSend);
 }
 
 void KeyboardTask::buildLOGRQ(string name) {
@@ -96,5 +97,3 @@ void KeyboardTask::buildDELRQ(string name) {
     connectionHandler.sendPacket(toSend);
 }
 
-void KeyboardTask::buildDISC() {
-}
