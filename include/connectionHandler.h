@@ -14,6 +14,8 @@ private:
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
 	tcp::socket socket_; 
     bool shouldTerminate;
+    string fileUpload;
+    string fileDownload;
 public:
     ConnectionHandler(std::string host, short port);
     virtual ~ConnectionHandler();
@@ -55,9 +57,21 @@ public:
     void sendPacketDISC();
 
     //sends a packet of type DIRQ
+    void sendPacket(DIRQ& p);
+
+
+    string &getFileUpload();
+
+    void setFileUpload( string &fileUpload);
+
+    string &getFileDownload();
+
+    void setFileDownload( string &fileDownload);
+
     void sendPacketDIRQ();
 
     bool shouldTerminate();
 }; //class ConnectionHandler
- 
+
+
 #endif

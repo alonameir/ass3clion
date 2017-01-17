@@ -1,4 +1,6 @@
 #include <Packets/Packet.h>
+#include <Packets/DIRQ.h>
+#include <Packets/DISC.h>
 #include "connectionHandler.h"
 
 using boost::asio::ip::tcp;
@@ -132,4 +134,22 @@ void ConnectionHandler::sendPacketDISC() {
     shouldTerminate=true;
 }
 
-bool ConnectionHandler::shouldTerminate(){ return shouldTerminate; }
+bool ConnectionHandler::shouldTerminate(){
+    return shouldTerminate;
+}
+
+string &ConnectionHandler::getFileUpload()  {
+    return fileUpload;
+}
+
+void ConnectionHandler::setFileUpload (string &fileUpload) {
+    ConnectionHandler::fileUpload = fileUpload;
+}
+
+string &ConnectionHandler::getFileDownload()  {
+    return fileDownload;
+}
+
+void ConnectionHandler::setFileDownload( string &fileDownload) {
+    ConnectionHandler::fileDownload = fileDownload;
+}
