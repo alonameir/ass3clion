@@ -3,6 +3,7 @@
 //
 
 #include <ACK.h>
+#include <BidiMessagingProtocolPacket.h>
 #include "../include/Packet.h"
 
 ACK::ACK(): opcode(4), blockNumber(-1) {}
