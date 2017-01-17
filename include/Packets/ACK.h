@@ -13,6 +13,7 @@ private:
 
 public:
     ACK();
+    ~ACK();
     ACK(short blockNumber);
     short getOpcode();
     short getBlockNumber();

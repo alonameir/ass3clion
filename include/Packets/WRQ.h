@@ -12,12 +12,13 @@ private:
     short opcode;
 public:
     WRQ();
+    ~WRQ();
     WRQ(string str);
     short getOpcode();
     void execute(BidiMessagingProtocolPacket p);
-}; {
-
 };
+
+
 
 
 #endif //ASS3CLION_WRQ_H

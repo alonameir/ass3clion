@@ -38,3 +38,8 @@ vector<char> DATA::getData() {
 void DATA::addToData(char b) {
     data.push_back(b);
 }
+
+DATA::~DATA() {
+    data.clear();
+    delete data;
+}

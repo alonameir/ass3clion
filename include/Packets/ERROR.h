@@ -17,6 +17,7 @@ private:
     char byte;
 public:
     ERROR();
+    ~ERROR();
     short getOpcode();
     short getErrorcode();
     void setErrorcode(short errcode);

@@ -75,30 +75,38 @@ void KeyboardTask::buildRRQ(string name){
      * what we should do here is send a RRQ packet to "sendPacket" in connection Handler.
      * **/
     RRQ* toSend=new RRQ(name);
+    connectionHandler.setLastSent(1);
+    connectionHandler.setFileUpload(name);
     connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildWRQ(string name){
     WRQ* toSend=new WRQ(name);
+    connectionHandler.setLastSent(2);
+    connectionHandler.setFileDownload(name);
     connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildDIRQ() {
     DIRQ* toSend=new DIRQ();
+    connectionHandler.setLastSent(6);
     connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildLOGRQ(string name) {
     LOGRQ* toSend=new LOGRQ(name);
+    connectionHandler.setLastSent(7);
     connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildDELRQ(string name) {
     DELRQ* toSend= new DELRQ(name);
+    connectionHandler.setLastSent(8);
     connectionHandler.sendPacket(*toSend);
 }
 
 void KeyboardTask::buildDISC() {
     DISC* toSend=new DISC();
+    connectionHandler.setLastSent(10);
     connectionHandler.sendPacket(*toSend);
 }

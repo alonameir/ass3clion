@@ -7,6 +7,7 @@
 #include "Packets/Packet.h"
 
 ACK::ACK(): opcode(4), blockNumber(-1) {}
+ACK::~ACK(){}
 
 ACK::ACK(short blockNumber): opcode(4), blockNumber(blockNumber) {}
 

@@ -5,12 +5,14 @@
 #include <string>
 #include <connectionHandler.h>
 #include <SocketTask.h>
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/pthread/mutex.hpp>
 
 
 using namespace std;
 
-SocketTask::SocketTask(ConnectionHandler& c) :
-        handler(c), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
+SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
+        handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
         sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){}
 
 
@@ -59,8 +61,8 @@ int SocketTask:: handelWithAck(){
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
     if(isACKBlockNumGet){
         currentNumOfBlockACK=bytesToShort(bytes);
+        cout<< "ACK " << currentNumOfBlockACK <<endl;
         if(currentNumOfBlockACK==0) {
-            cout<< "ACK 0"  << endl;;
             if(handler.getLastSent()==10){
                 handler.close();
                 return 0;
@@ -74,7 +76,7 @@ int SocketTask:: handelWithAck(){
             }
             else if(upLoadfinished){
                 blockNumber=0;
-                return 1
+                return 1;
             }
         }
     }
@@ -126,6 +128,8 @@ void SocketTask:: keepUploading(short currentBlock){
             counterSend++;
         }
         handler.sendData(size, sending, blockNumber);
+        cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
+        cout<< "WRQ "<<handler.getFileUpload() << " complete"<< endl;
         handler.setFileUpload("");
         upLoadfinished=true;
         counterSend=0;
@@ -138,6 +142,7 @@ void SocketTask:: keepUploading(short currentBlock){
             counterSend++;
         }
         handler.sendData(512, sending, blockNumber);
+        cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
         delete[] sending;
     }
 }
@@ -176,9 +181,15 @@ void SocketTask:: keepHanderWithData(){
         counterSend++;
     }
     fwrite(addToFile,1, sizeof(addToFile),dataFile);
+    if(handler.getLastSent()==1)
+        cout<< "RRQ "<<handler.getFileDownload() << " " <<blockNumber<< endl;
     delete [] addToFile;
     if(packetSizeData<512){
-
+        if(handler.getLastSent()==1)
+            cout<< "RRQ "<<handler.getFileDownload() << " complete" << endl;
+        else{
+            cout<< "Dirq "<<"allTheFilesInServer.txt" << " complete" << endl;
+        }
         fclose(dataFile);
     }
 

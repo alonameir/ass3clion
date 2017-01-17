@@ -13,6 +13,7 @@ private:
     short opcode;
 public:
     LOGRQ();
+    ~LOGRQ();
     LOGRQ(string str);
     short getOpcode();
     void execute(BidiMessagingProtocolPacket p);

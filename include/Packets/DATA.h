@@ -21,6 +21,7 @@ private:
 public:
 //    DATA(short packetSize);
     DATA();
+    ~DATA();
     DATA(short packetSize, vector<char> data, short blockNumber );
     short getOpcode();
     short getPacketSize();
@@ -30,5 +31,4 @@ public:
     vector<char> getData(); //TODO: CHECK IF WE NEED TO RETURN POINTER
     void addToData(char b);
     void execute(BidiMessagingProtocolPacket p);
-
 };

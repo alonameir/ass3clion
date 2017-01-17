@@ -27,7 +27,7 @@ public:
     PacketWithString();
     PacketWithString(string str);
     string getString();
-
+    ~PacketWithString();
     char getLastByte();
     virtual short getOpcode()=0;
     virtual void execute(BidiMessagingProtocolPacket& p)=0;

@@ -7,6 +7,7 @@
 #include <boost/thread.hpp>
 #include <boost/core/ref.hpp>
 #include <KeyboardTask.h>
+#include <SocketTask.h>
 
 using namespace std;
 
@@ -28,7 +29,7 @@ int main (int argc, char *argv[]) {
 
     boost::mutex mutex;
     KeyboardTask task1(connectionHandler, &mutex);
-//    SocketTask task2(connectionHandler, &mutex);
+    SocketTask task2(connectionHandler, &mutex);
 
 
     boost::thread th1(boost::bind(&KeyboardTask::run, &task1));

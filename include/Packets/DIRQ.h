@@ -13,7 +13,8 @@ class DIRQ: public Packet{
 private:
     short opcode;
 public:
-    DIRQ:();
+    DIRQ();
+    ~DIRQ();
     short getOpcode();
     void execute(BidiMessagingProtocolPacket& p);
 };

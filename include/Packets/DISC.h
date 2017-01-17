@@ -15,6 +15,7 @@ private:
     short opcode;
 public:
     DISC();
+    ~DISC();
     short getOpcode();
     void execute(BidiMessagingProtocolPacket& p);
 };

@@ -12,6 +12,9 @@ WRQ::WRQ(string str): PacketWithString(str),opcode(2){}
 short WRQ:: getOpcode(){
     return opcode;
 }
-void WRQ:: execute(BidiMessagingProtocolPacket& p){
+void WRQ:: execute(BidiMessagingProtocolPacket p){
     p.execute(this);
+}
+
+WRQ::~WRQ() {
 }

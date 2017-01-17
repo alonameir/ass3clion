@@ -11,6 +11,9 @@ DELRQ::DELRQ(string str): PacketWithString(str),opcode(8){}
 short DELRQ:: getOpcode(){
     return opcode;
 }
+
+DELRQ::~DELRQ() {}
+
 void DELRQ:: execute(BidiMessagingProtocolPacket& p){
     p.execute(this);
 }
