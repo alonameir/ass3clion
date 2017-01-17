@@ -11,8 +11,10 @@ using std::cerr;
 using std::endl;
 using std::string;
  
-ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){}
-    
+ConnectionHandler::ConnectionHandler(string host, short port):
+        host_(host), port_(port), io_service_(), socket_(io_service_), fileUpload(""), fileDownload(""),
+        lastSent(-1),shouldTerminate(false){}
+
 ConnectionHandler::~ConnectionHandler() {
     close();
 }
@@ -138,7 +140,7 @@ string &ConnectionHandler::getFileUpload()  {
     return fileUpload;
 }
 
-void ConnectionHandler::setFileUpload (string &fileUpload) {
+void ConnectionHandler::setFileUpload (string fileUpload) {
     ConnectionHandler::fileUpload = fileUpload;
 }
 
