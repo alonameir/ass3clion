@@ -1,4 +1,4 @@
-#include <Packet.h>
+#include <Packets/Packet.h>
 #include "connectionHandler.h"
 
 using boost::asio::ip::tcp;
@@ -103,6 +103,6 @@ void ConnectionHandler::close() {
     }
 }
 
-void sendPacket(Packet p){//THIS METHOD SHOULD BE BLOCKING
+void ConnectionHandler:: sendPacket(Packet& p){//THIS METHOD SHOULD BE BLOCKING
 
 }

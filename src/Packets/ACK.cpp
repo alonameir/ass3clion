@@ -2,8 +2,8 @@
 // Created by alonam on 1/14/17.
 //
 
-#include <ACK.h>
-#include "../include/Packet.h"
+#include <Packets/ACK.h>
+#include "Packets/Packet.h"
 
 ACK::ACK(): opcode(4), blockNumber(-1) {}
 

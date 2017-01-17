@@ -2,6 +2,10 @@
 // Created by alonam on 1/16/17.
 //
 
+#include <Packets/RRQ.h>
+#include <Packets/WRQ.h>
+#include <Packets/ACK.h>
+#include <Packets/DIRQ.h>
 #include "KeyboardTask.h"
 
 using namespace std;
@@ -21,13 +25,13 @@ void KeyboardTask:: run(){
             buildRRQ(name);
         }
         else if (command.compare("WRQ")==0){
-
+            buildWRQ(name);
         }
         else if (command.compare("ACK")==0){
-
+            buildACK(name);
         }
         else if (command.compare("DIRQ")==0){
-
+            buildDIRQ();
         }
         else if (command.compare("LOGRQ")==0){
 
@@ -36,7 +40,7 @@ void KeyboardTask:: run(){
 
         }
         else if (command.compare("DISC")==0){
-
+            break; //here i should exit the loop and disconnect once i get an ACK in return
         }
         else{//which means the command is illegal
 
@@ -63,6 +67,23 @@ void KeyboardTask::setCommandAndName(string line){
 }
 
 void KeyboardTask::buildRRQ(string name){
-
+    /** in this function, we get a name which is the fileName we want to read.
+     * what we should do here is send a RRQ packet to "sendPacket" in connection Handler.
+     * **/
+    RRQ toSend(name);
+    connectionHandler.sendPacket(toSend);
 }
 
+void KeyboardTask::buildWRQ(string name){
+    WRQ toSend(name);
+    connectionHandler.sendPacket(toSend);
+}
+
+void KeyboardTask::buildACK(string blockNumber) {
+    ACK* toSend= new ACK((short)stoi(blockNumber));
+    connectionHandler.sendPacket(*toSend);
+}
+
+void KeyboardTask::buildDIRQ() {
+
+}

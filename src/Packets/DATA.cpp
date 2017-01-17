@@ -3,8 +3,8 @@
 //
 
 
-#include <DATA.h>
-#include "../include/Packet.h"
+#include <Packets/DATA.h>
+#include "Packets/Packet.h"
 
 //DATA::DATA(short packetSize): opcode(3), packetSize(packetSize), blockNumber(0), index(0), data() {}
 

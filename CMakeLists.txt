@@ -7,7 +7,7 @@ include_directories(include src bin)
 
 file(GLOB SOURCES "src/*.cpp" "include/*.h")
 
-add_executable(ass3clion ${SOURCES} include/DISC.h src/DISC.cpp include/ACK.h src/ACK.cpp include/DATA.h src/DATA.cpp src/BCAST.cpp include/BCAST.h include/ERROR.h src/ERROR.cpp)
+add_executable(ass3clion ${SOURCES} include/Packets/DISC.h src/Packets/DISC.cpp src/MessageEncoderDecoder.cpp include/MessageEncoderDecoder.h include/MessageEncDecKeyboard.h src/MessageEncDecKeyboard.cpp include/KeyboardTask.h src/KeyboardTask.cpp)
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(Boost_FOUND)

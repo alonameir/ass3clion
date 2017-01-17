@@ -2,8 +2,8 @@
 // Created by alonam on 1/14/17.
 //
 
-#include <DISC.h>
-#include "../include/Packet.h"
+#include <Packets/DISC.h>
+#include "Packets/Packet.h"
 
 using namespace std;
 
