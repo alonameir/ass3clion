@@ -3,7 +3,6 @@
 //
 
 #include "Packet.h"
-#include "BidiMessagingProtocolPacket.h"
 
 #ifndef ASS3CLION_DISC_H
 #define ASS3CLION_DISC_H
@@ -17,5 +16,4 @@ public:
     DISC();
     ~DISC();
     short getOpcode();
-    void execute(BidiMessagingProtocolPacket& p);
 };

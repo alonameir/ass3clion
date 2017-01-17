@@ -143,15 +143,12 @@ void ConnectionHandler::sendPacketACK(ACK p) {
     sendBytes(blockNum,2);
     }
 
-bool ConnectionHandler::shouldTerminate(){
-    return shouldTerminate;
-}
 
 string &ConnectionHandler::getFileUpload()  {
     return fileUpload;
 }
 
-void ConnectionHandler::setFileUpload (string &fileUpload) {
+void ConnectionHandler::setFileUpload (string fileUpload) {
     ConnectionHandler::fileUpload = fileUpload;
 }
 

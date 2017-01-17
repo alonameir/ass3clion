@@ -24,8 +24,7 @@ public:
 public:
     ConnectionHandler(std::string host, short port);
     ~ConnectionHandler();
-    virtual ~ConnectionHandler();
- 
+
     // Connect to the remote machine
     bool connect();
  
@@ -64,7 +63,7 @@ public:
     void sendPacketACK(ACK p);
 
     //sends a packet of type DIRQ
-    void sendPacket(DIRQ& p);
+    void sendPacketDIRQ();
 
 
     string &getFileUpload();

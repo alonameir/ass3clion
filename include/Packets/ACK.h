@@ -18,5 +18,4 @@ public:
     short getOpcode();
     short getBlockNumber();
     void setBlockNumber(short blockNumber);
-    void execute(BidiMessagingProtocolPacket p);
 };

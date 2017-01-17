@@ -7,7 +7,6 @@
 
 
 #include "Packet.h"
-#include "BidiMessagingProtocolPacket.h"
 
 class DIRQ: public Packet{
 private:
