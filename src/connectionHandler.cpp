@@ -1,5 +1,5 @@
+#include <Packets/Packet.h>
 #include "connectionHandler.h"
-#include "../include/connectionHandler.h"
 
 using boost::asio::ip::tcp;
 
@@ -100,5 +100,11 @@ void ConnectionHandler::close() {
         socket_.close();
     } catch (...) {
         std::cout << "closing failed: connection already closed" << std::endl;
+    }
+}
+
+void ConnectionHandler:: sendPacket(Packet& p){//THIS METHOD SHOULD BE BLOCKING
+    if (p.getOpcode() == 1){// this is an RRQ,WRQ,DELRQ,LOGRQ
+
     }
 }

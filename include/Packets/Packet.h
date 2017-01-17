@@ -4,6 +4,7 @@
 
 #include <boost/regex/config/cwchar.hpp>
 #include <string>
+#include "BidiMessagingProtocolPacket.h"
 
 #ifndef ASS3CLION_PACKET_H
 #define ASS3CLION_PACKET_H
