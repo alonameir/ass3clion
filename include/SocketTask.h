@@ -23,6 +23,7 @@ private:
     short packetSizeData;
     short currentNumOfBlockACK;
     FILE * dataFile;
+    string dirqData;
 
     short bytesToShort(char* bytesArr);
     void shortToBytes(short num, char* bytesArr);
@@ -32,8 +33,9 @@ private:
     void handelWithDATA();
     void keepUploading(short currentBlock);
     void keepHanderWithData();
+    void printDirq();
 public:
     SocketTask(ConnectionHandler& c, boost::mutex* mutex);
-//    ~SocketTask();
+    ~SocketTask();
     void run();
 };
