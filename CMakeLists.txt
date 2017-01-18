@@ -8,7 +8,7 @@ include_directories(include src bin)
 file(GLOB SOURCES "src/*.cpp" "include/*.h" "src/Packets/*.cpp" "include/Packets/*.h")
 
 add_executable(ass3clion ${SOURCES} )
-#include/Packets/DISC.h src/Packets/DISC.cpp include/Packets/ACK.h src/Packets/ACK.cpp include/Packets/DATA.h src/Packets/DATA.cpp src/Packets/BCAST.cpp include/Packets/BCAST.h include/Packets/ERROR.h src/Packets/ERROR.cpp)
+
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
 if(Boost_FOUND)
     message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
