@@ -63,6 +63,7 @@ public:
     //sends a packet of type DISC
     void sendPacketDISC();
     void sendPacketACK(ACK& p);
+    void sendPacketData(ERROR& p);
 
     //sends a packet of type DIRQ
     void sendPacketDIRQ();
