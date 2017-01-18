@@ -19,7 +19,6 @@ private:
     vector<char> data;
 
 public:
-//    DATA(short packetSize);
     DATA();
     ~DATA();
     short getOpcode();
