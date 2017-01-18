@@ -6,6 +6,8 @@
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
+using namespace std;
+
 
 class ConnectionHandler {
 private:
@@ -72,8 +74,6 @@ public:
     string &getFileDownload();
 
     void setFileDownload( string &fileDownload);
-
-    void sendPacketDIRQ();
 
     void sendData(int, char& buff[],short);
 

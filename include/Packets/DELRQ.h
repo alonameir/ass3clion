@@ -1,22 +1,22 @@
+////
+//// Created by romybu on 14/01/17.
+////
 //
-// Created by romybu on 14/01/17.
+//#ifndef ASS3CLION_DELRQ_H
+//#define ASS3CLION_DELRQ_H
+//#include "Packet.h"
 //
-
-#ifndef ASS3CLION_DELRQ_H
-#define ASS3CLION_DELRQ_H
-#include "Packet.h"
-
-class DELRQ : public PacketWithString {
-private:
-    short opcode;
-public:
-    DELRQ();
-    ~DELRQ();
-    DELRQ(string str);
-    short getOpcode();
-};
-
-
-
-
-#endif //ASS3CLION_DELRQ_H
+//class DELRQ : public PacketWithString {
+//private:
+//    short opcode;
+//public:
+//    DELRQ();
+//    ~DELRQ();
+//    DELRQ(string str);
+//    short getOpcode();
+//};
+//
+//
+//
+//
+//#endif //ASS3CLION_DELRQ_H

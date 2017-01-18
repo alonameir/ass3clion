@@ -3,7 +3,10 @@
 //
 
 #include <bits/basic_string.h>
-#include <Packets/ERROR.h>
+//#include <Packets/ERROR.h>
+#include "Packets/Packet.h"
+
+
 using namespace std;
 ERROR::ERROR(): opcode(5), errorCode(-1), str(""), byte('0') {}
 
