@@ -119,7 +119,7 @@ void SocketTask:: handelWithBCAST(){
 
 void SocketTask:: keepUploading(short currentBlock){
     if (currentBlock==1){
-        FILE * file=fopen(handler.getFileUpload(),"rb");
+        FILE * file=fopen(handler.getFileUpload().c_str(),"rb");
         fseek (file , 0 , SEEK_END);
         sizeToSend=ftell(file);///tells the size of the file
         rewind(file);
@@ -173,7 +173,7 @@ void SocketTask::handelWithDATA() {
             keepHanderWithData();
         }else if(handler.getLastSent()==1){
             if(blockNumber){
-                dataFile=fopen(handler.getFileDownload(),"ab");
+                dataFile=fopen(handler.getFileDownload().c_str(),"ab");
                 counterSend=0;
             }
             keepHanderWithData();

@@ -28,8 +28,8 @@ public:
     string getString();
     ~PacketWithString();
     char getLastByte();
-    virtual short getOpcode()=0;
-    virtual void setString(string& str)=0;
+//    virtual short getOpcode()=0;
+    virtual void setString(string& str);
 
 };
 
@@ -93,7 +93,7 @@ public:
     DELRQ();
     ~DELRQ();
     DELRQ(string str);
-    short getOpcode();
+    virtual short getOpcode();
 };
 
 class DIRQ: public Packet{

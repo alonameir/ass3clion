@@ -171,7 +171,7 @@ void ConnectionHandler::sendData(int size,char buff[], short block) {///check wh
     shortToBytes(block+1,twoBytes);//block number send  ///!!!!!!!!!!!!!!!!!!!!!!
     sendBytes(twoBytes,2);
     sendBytes(buff,size);
-    delete[] twoBytes;
+//    delete[] twoBytes;
 }
 
 short ConnectionHandler::getLastSent()  {
