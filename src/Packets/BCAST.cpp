@@ -3,7 +3,7 @@
 //
 
 //#include "Packets/BCAST.h"
-#include "../include/Packets/BCAST.h"
+#include "Packets/Packet.h"
 
 BCAST::BCAST(): opcode(9), deletedOrAdded(-1), fileName(""), lastByte('0') {}
 

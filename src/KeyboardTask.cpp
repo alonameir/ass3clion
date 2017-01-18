@@ -10,6 +10,7 @@
 #include <Packets/DELRQ.h>
 #include <Packets/DISC.h>
 #include "KeyboardTask.h"
+#include "Packets/Packet.h"
 
 using namespace std;
 
@@ -73,35 +74,35 @@ void KeyboardTask::buildRRQ(string name){
     /** in this function, we get a name which is the fileName we want to read.
      * what we should do here is send a RRQ packet to "sendPacket" in connection Handler.
      * **/
-    RRQ* toSend=new RRQ(name);
+    RRQ toSend(name);
     connectionHandler.setLastSent(1);
     connectionHandler.setFileUpload(name);
-    connectionHandler.sendPacket(*toSend);
+    connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildWRQ(string name){
-    WRQ* toSend=new WRQ(name);
+    WRQ toSend(name);
     connectionHandler.setLastSent(2);
     connectionHandler.setFileDownload(name);
-    connectionHandler.sendPacket(*toSend);
+    connectionHandler.sendPacket(toSend);
     //delete??
 }
 
 
 void KeyboardTask::buildLOGRQ(string name) {
-    LOGRQ* toSend=new LOGRQ(name);
+    LOGRQ toSend(name);
     connectionHandler.setLastSent(7);
-    connectionHandler.sendPacket(*toSend);
+    connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildDELRQ(string name) {
-    DELRQ* toSend= new DELRQ(name);
+    DELRQ toSend(name);
     connectionHandler.setLastSent(8);
-    connectionHandler.sendPacket(*toSend);
+    connectionHandler.sendPacket(toSend);
 }
 
 
 KeyboardTask::~KeyboardTask() {
-    delete connectionHandler;
-    delete _mutex;
+    //delete connectionHandler;
+    //delete _mutex;
 }

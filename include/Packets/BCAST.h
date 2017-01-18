@@ -6,22 +6,22 @@
 #define ASS3CLION_BCAST_H
 #include "Packet.h"
 
-class BCAST {
-private:
-    short opcode;
-    char deletedOrAdded;
-    string fileName;
-    char lastByte;
-public:
-    BCAST();
-    ~BCAST();
-    BCAST(char deletedOrAdded, string str);
-    short getOpcode();
-    char getDeletedOrAdded();
-    void setDeletedOrAdded(char deletedOrAdded);
-    string getFileName();
-    void setFileName(string fileName);
-};
+//class BCAST {
+//private:
+//    short opcode;
+//    char deletedOrAdded;
+//    string fileName;
+//    char lastByte;
+//public:
+//    BCAST();
+//    ~BCAST();
+//    BCAST(char deletedOrAdded, string str);
+//    short getOpcode();
+//    char getDeletedOrAdded();
+//    void setDeletedOrAdded(char deletedOrAdded);
+//    string getFileName();
+//    void setFileName(string fileName);
+//};
 
 
 #endif //ASS3CLION_BCAST_H

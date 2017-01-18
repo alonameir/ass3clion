@@ -10,22 +10,23 @@
 #include <vector>
 #include "Packet.h"
 
-class DATA: public Packet{
-private:
-    short opcode;
-    short packetSize;
-    short blockNumber;
-    int index;
-    vector<char> data;
-
-public:
-    DATA();
-    ~DATA();
-    short getOpcode();
-    short getPacketSize();
-    void setPacketSize(short ps);
-    short getBlockNumber();
-    void setBlockNumber(short blockNumber);
-    vector<char> getData(); //TODO: CHECK IF WE NEED TO RETURN POINTER
-    void addToData(char b);
-};
+//class DATA: public Packet{
+//private:
+//    short opcode;
+//    short packetSize;
+//    short blockNumber;
+//    int index;
+//    vector<char> data;
+//
+//public:
+////    DATA(short packetSize);
+//    DATA();
+//    ~DATA();
+//    short getOpcode();
+//    short getPacketSize();
+//    void setPacketSize(short ps);
+//    short getBlockNumber();
+//    void setBlockNumber(short blockNumber);
+//    vector<char> getData(); //TODO: CHECK IF WE NEED TO RETURN POINTER
+//    void addToData(char b);
+//};

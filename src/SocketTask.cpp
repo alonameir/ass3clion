@@ -5,23 +5,23 @@
 #include <string>
 #include <connectionHandler.h>
 #include <SocketTask.h>
+#include "Packets/Packet.h"
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/pthread/mutex.hpp>
 
 
 using namespace std;
 
-SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
+SocketTask::SocketTask(ConnectionHandler c, boost::mutex* mutex) :
         handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
         sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){}
-
 
 ~SocketTask();
 
 void SocketTask::run(){
     int i=1;
     while(i==1) {
-        //bytes = {''};
+//        bytes = {''};
         bool isOpcodeGet = handler.getBytes(bytes, 2);
         if (isOpcodeGet) {
             short opCode = bytesToShort(bytes);
@@ -61,7 +61,7 @@ void  SocketTask:: shortToBytes(short num, char* bytesArr)
 }
 
 int SocketTask:: handelWithAck(){
-    //bytes={''};
+//    bytes={''};
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
     if(isACKBlockNumGet){
         currentNumOfBlockACK=bytesToShort(bytes);
@@ -90,7 +90,7 @@ int SocketTask:: handelWithAck(){
 }
 
 void  SocketTask:: handelWithError(){
-    //bytes={''};
+//    bytes={''};
     bool isErrorNum=handler.getBytes(bytes,2);
     string s("");
     bool isErrorMsg=handler.getFrameAscii(s,'0');
@@ -100,7 +100,7 @@ void  SocketTask:: handelWithError(){
 }
 
 void SocketTask:: handelWithBCAST(){
-    //bytes={''};
+//    bytes={''};
     bool isDelOrAddNum=handler.getBytes(bytes,1);
     string s("");
     bool isDelOrAddNumMsg=handler.getFrameAscii(s,'0');
@@ -154,11 +154,11 @@ void SocketTask:: keepUploading(short currentBlock){
 }
 
 void SocketTask::handelWithDATA() {
-    //bytes={''};
+//    bytes={''};
     bool isPacketSize=handler.getBytes(bytes,2);
-    //bytes={''};
+//    bytes={''};
     bool isBlockNum=handler.getBytes(bytes,2);
-    //bytes={''};
+//    bytes={''};
     bool isDataGet=handler.getBytes(bytes,2);
     if((isPacketSize && isPacketSize) && isDataGet ){
         packetSizeData=bytesToShort(bytes);
@@ -171,7 +171,7 @@ void SocketTask::handelWithDATA() {
             }
             keepHanderWithData();
         }else if(handler.getLastSent()==1){
-            if(blockNumber){
+            if(blockNumber==1){
                 dataFile=fopen(handler.getFileDownload(),"ab");
                 counterSend=0;
             }
@@ -187,6 +187,8 @@ void SocketTask:: keepHanderWithData(){
         counterSend++;
     }
     fwrite(addToFile,1, sizeof(addToFile),dataFile);
+    ACK toAck(blockNumber);
+    handler.sendPacketACK(toAck);
     if(handler.getLastSent()==1)
         cout<< "RRQ "<<handler.getFileDownload() << " " <<blockNumber<< endl;
     delete [] addToFile;
@@ -202,8 +204,8 @@ void SocketTask:: keepHanderWithData(){
 }
 
 SocketTask::~SocketTask() {
-    delete handler;
-    delete _mutex;
+    //delete handler;
+    //delete _mutex;
 }
 
 

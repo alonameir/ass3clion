@@ -137,7 +137,7 @@ void ConnectionHandler::sendPacketDISC() {
     if (!isSent){} /** DO SOMETHING?? **/
 }
 
-void ConnectionHandler::sendPacketACK(ACK p) {
+void ConnectionHandler::sendPacketACK(ACK& p) {
     char* opcode;
     shortToBytes(4,opcode);
     char* blockNum;
@@ -163,7 +163,7 @@ void ConnectionHandler::setFileDownload( string &fileDownload) {
     ConnectionHandler::fileDownload = fileDownload;
 }
 //check where adding one to block number
-void ConnectionHandler::sendData(int size,char &buff[], short block) {
+void ConnectionHandler::sendData(int size,char buff[], short block) {
     char twoBytes[2];//check if char*
     shortToBytes((short)3,twoBytes);//opCode send
     sendBytes(twoBytes,2);
