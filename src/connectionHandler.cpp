@@ -182,4 +182,14 @@ void ConnectionHandler::setLastSent(short lastSent) {
     ConnectionHandler::lastSent = lastSent;
 }
 
+void ConnectionHandler::sendPacketData(ERROR &p) {
+    char* opcode;
+    shortToBytes(8,opcode);
+    char* errorCode;
+    shortToBytes(p.getErrorcode(),errorCode);
+    sendBytes(opcode,2);
+    sendBytes(errorCode,2);
+    sendFrameAscii(p.getStr(), '0');
+}
+
 //ConnectionHandler::ConnectionHandler(): host_(), port_(),io_service_(), socket_(io_service_), fileUpload(), fileDownload(), lastSent() {}

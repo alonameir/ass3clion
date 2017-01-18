@@ -4,6 +4,7 @@
 
 //#include <bits/basic_string.h>
 //#include <Packets/ERROR.h>
+#include <string>
 #include "Packets/Packet.h"
 
 
@@ -31,5 +32,9 @@ void ERROR::setStr(string msg) {
 }
 
 ERROR::~ERROR() {
+
+}
+
+ERROR::ERROR(short _errorCode, string _str): opcode(5), errorCode(_errorCode), str(_str), byte('0') {
 
 }

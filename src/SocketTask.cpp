@@ -12,7 +12,7 @@ using namespace std;
 
 SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
         handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
-        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){
+        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(), dirqData(""){
 }
 
 
@@ -84,6 +84,10 @@ int SocketTask:: handelWithAck(){
                 blockNumber=0;
                 return 1;
             }
+        }
+        else{
+            ERROR tosend(8,"Invalid ACK");
+            handler.sendPacketData(tosend);
         }
     }
     return 1;
@@ -163,19 +167,24 @@ void SocketTask::handelWithDATA() {
     if((isBlockNum && isPacketSize) && isDataGet ){
         packetSizeData=bytesToShort(bytes);
         blockNumber=bytesToShort(bytes);
-        if(blockNumber== currentNumOfBlockACK-1)
-        if(handler.getLastSent()==6){
-            if(blockNumber==1){
-                dataFile=fopen("allTheFilesInServer.txt","ab");//TODO: check if this is currect
-                counterSend=0;
+        if(blockNumber== currentNumOfBlockACK-1) {
+            if (handler.getLastSent() == 6) {
+                if (blockNumber == 1) {
+                    dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
+                    counterSend = 0;
+                }
+                keepHanderWithData();
+            } else if (handler.getLastSent() == 1) {
+                if (blockNumber) {
+                    dataFile = fopen(handler.getFileDownload().c_str(), "ab");
+                    counterSend = 0;
+                }
+                keepHanderWithData();
             }
-            keepHanderWithData();
-        }else if(handler.getLastSent()==1){
-            if(blockNumber){
-                dataFile=fopen(handler.getFileDownload().c_str(),"ab");
-                counterSend=0;
-            }
-            keepHanderWithData();
+        }
+        else{
+            ERROR tosend(8,"Invalid DATA");
+            handler.sendPacketData(tosend);
         }
     }
 }
@@ -186,22 +195,43 @@ void SocketTask:: keepHanderWithData(){
         addToFile[i]=bytes[counterSend];
         counterSend++;
     }
-    fwrite(addToFile,1, sizeof(addToFile),dataFile);
+    if (handler.getLastSent()==1)
+        fwrite(addToFile,1, sizeof(addToFile),dataFile);
+    else{
+        dirqData.append(addToFile);
+    }
     ACK toSend(blockNumber);
     handler.sendPacketACK(toSend);
-    if(handler.getLastSent()==1)
-        cout<< "RRQ "<<handler.getFileDownload() << " " <<blockNumber<< endl;
-//    delete [] addToFile;
     if(packetSizeData<512){
         if(handler.getLastSent()==1)
             cout<< "RRQ "<<handler.getFileDownload() << " complete" << endl;
         else{
-            cout<< "Dirq "<<"allTheFilesInServer.txt" << " complete" << endl;
+            printDirq();
         }
         fclose(dataFile);
     }
 
 }
+
+void SocketTask::printDirq() {
+    int numOfFiles=1;
+    string temp("");
+    int i=0;
+    while( i < sizeof(dirqData)) {
+        if (dirqData.at(i) == '\0') {
+            cout << temp << " " << numOfFiles << endl;
+            temp.clear();
+            numOfFiles++;
+        } else {
+            char a = dirqData.at(i);
+            temp.append(1, a);
+            }
+        i++;
+    }
+
+}
+
+
 
 //SocketTask::~SocketTask() {
 //    delete handler;
