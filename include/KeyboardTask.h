@@ -15,12 +15,12 @@ using namespace std;
 
 class KeyboardTask{
 private:
-    ConnectionHandler connectionHandler;
+    ConnectionHandler& connectionHandler;
     boost::mutex * _mutex;
     string command;
     string name;
 public:
-    KeyboardTask(ConnectionHandler c, boost::mutex* mutex);
+    KeyboardTask(ConnectionHandler& c, boost::mutex* mutex);
     ~KeyboardTask();
     void run();
     void setCommandAndName(string line);

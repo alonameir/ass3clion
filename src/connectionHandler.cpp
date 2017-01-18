@@ -1,7 +1,7 @@
-#include <Packets/Packet.h>
-#include <Packets/DIRQ.h>
-#include <Packets/DISC.h>
-#include <Packets/ACK.h>
+//#include <Packets/Packet.h>
+//#include <Packets/DIRQ.h>
+//#include <Packets/DISC.h>
+//#include <Packets/ACK.h>
 #include "connectionHandler.h"
 
 using boost::asio::ip::tcp;
@@ -181,3 +181,5 @@ short ConnectionHandler::getLastSent()  {
 void ConnectionHandler::setLastSent(short lastSent) {
     ConnectionHandler::lastSent = lastSent;
 }
+
+//ConnectionHandler::ConnectionHandler(): host_(), port_(),io_service_(), socket_(io_service_), fileUpload(), fileDownload(), lastSent() {}

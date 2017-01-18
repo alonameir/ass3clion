@@ -2,7 +2,7 @@
 // Created by alonam on 1/16/17.
 //
 
-#include <Packets/Packet.h>
+//#include <Packets/Packet.h>
 //#include <Packets/WRQ.h>
 //#include <Packets/ACK.h>
 //#include <Packets/DIRQ.h>
@@ -15,7 +15,7 @@ using namespace std;
 
 
 KeyboardTask::KeyboardTask
-        (ConnectionHandler c, boost::mutex* mutex): connectionHandler(c), _mutex(mutex), command(""), name("") {}
+        (ConnectionHandler& c, boost::mutex* mutex): connectionHandler(c), _mutex(mutex), command(""), name("") {}
 
 void KeyboardTask:: run(){
     while (1) { /** maybe this should be an infinite loop?? **/

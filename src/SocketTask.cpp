@@ -11,9 +11,10 @@
 
 using namespace std;
 
-SocketTask::SocketTask(ConnectionHandler c, boost::mutex* mutex) :
+SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
         handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
-        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){}
+        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){
+}
 
 
 //SocketTask::~SocketTask(){};
@@ -203,9 +204,9 @@ void SocketTask:: keepHanderWithData(){
 
 }
 
-SocketTask::~SocketTask() {
-    delete handler;
-    delete _mutex;
-}
+//SocketTask::~SocketTask() {
+//    delete handler;
+//    delete _mutex;
+//}
 
 

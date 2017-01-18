@@ -40,6 +40,6 @@ void DATA::addToData(char b) {
 }
 
 DATA::~DATA() {
-    data.clear();
-    delete data;
+//    data.clear();
+//    delete data;
 }

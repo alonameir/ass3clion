@@ -25,7 +25,7 @@ public:
     void setLastSent(short lastSent);
     ConnectionHandler(std::string host, short port);
     ~ConnectionHandler();
-
+//    ConnectionHandler();
 
     // Connect to the remote machine
     bool connect();
