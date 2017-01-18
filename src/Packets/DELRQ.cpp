@@ -12,4 +12,5 @@ short DELRQ:: getOpcode(){
     return opcode;
 }
 
-DELRQ::~DELRQ() {}
+DELRQ::~DELRQ() {
+}

@@ -1,4 +1,5 @@
-#include <Packets/Packet.h>
+
+
 #include <Packets/DIRQ.h>
 #include <Packets/DISC.h>
 #include <Packets/ACK.h>
@@ -113,7 +114,7 @@ void shortToBytes(short num, char* bytesArr){
     bytesArr[1] = (num & 0xFF);
 }
 
-void ConnectionHandler:: sendPacket(PacketWithString p){/** THIS METHOD SHOULD BE BLOCKING **/
+void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD BE BLOCKING **/
     char* opcode;
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
@@ -161,8 +162,8 @@ string &ConnectionHandler::getFileDownload()  {
 void ConnectionHandler::setFileDownload( string &fileDownload) {
     ConnectionHandler::fileDownload = fileDownload;
 }
-
-void ConnectionHandler::sendData(int size,char &buff[], short block) {///check where adding one to block number
+//check where adding one to block number
+void ConnectionHandler::sendData(int size,char &buff[], short block) {
     char twoBytes[2];//check if char*
     shortToBytes((short)3,twoBytes);//opCode send
     sendBytes(twoBytes,2);

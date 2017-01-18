@@ -84,6 +84,7 @@ void KeyboardTask::buildWRQ(string name){
     connectionHandler.setLastSent(2);
     connectionHandler.setFileDownload(name);
     connectionHandler.sendPacket(*toSend);
+    //delete??
 }
 
 

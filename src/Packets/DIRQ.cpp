@@ -3,9 +3,6 @@
 //
 
 #include "Packets/DIRQ.h"
-
-
-
 short DIRQ::getOpcode() {
     return 10;
 }
