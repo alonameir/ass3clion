@@ -124,6 +124,7 @@ private:
     char byte;
 public:
     ERROR();
+    ERROR(short _errorCode, string _str);
     ~ERROR();
     short getOpcode();
     short getErrorcode();
