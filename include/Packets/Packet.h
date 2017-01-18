@@ -8,7 +8,6 @@
 #ifndef ASS3CLION_PACKET_H
 #define ASS3CLION_PACKET_H
 
-#endif //ASS3CLION_PACKET_H
 using namespace std;
 
 class Packet{
@@ -29,7 +28,7 @@ public:
     char getLastByte();
     virtual short getOpcode()=0;
     virtual void setString(string& str)=0;
-
 };
 
 
+#endif //ASS3CLION_PACKET_H
