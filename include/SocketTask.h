@@ -34,9 +34,6 @@ private:
     void keepHanderWithData();
 public:
     SocketTask(ConnectionHandler& c, boost::mutex* mutex);
-
-    SocketTask(ConnectionHandler &handler);
-
-    ~SocketTask();
+//    ~SocketTask();
     void run();
 };

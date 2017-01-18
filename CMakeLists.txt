@@ -5,11 +5,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(include src bin)
 
-file(GLOB SOURCES "src/*.cpp" "include/*.h" "src/Packets/*.cpp" "include/Packets/*.h")
+file(GLOB SOURCES "src/*.cpp" "include/*.h" "include/Packets/*.h" "src/Packets/*.cpp")
 
 add_executable(ass3clion ${SOURCES} )
 
 find_package(Boost 1.57.0 COMPONENTS system filesystem REQUIRED)
+
 if(Boost_FOUND)
     message(STATUS "Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
     message(STATUS "Boost_LIBRARIES: ${Boost_LIBRARIES}")

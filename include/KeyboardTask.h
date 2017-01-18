@@ -15,7 +15,7 @@ using namespace std;
 
 class KeyboardTask{
 private:
-    ConnectionHandler connectionHandler;
+    ConnectionHandler& connectionHandler;
     boost::mutex * _mutex;
     string command;
     string name;
@@ -26,7 +26,7 @@ public:
     void setCommandAndName(string line);
     void buildRRQ(string name);
     void buildWRQ(string name);
-    void buildACK(string blockNumber);
+//    void buildACK(string blockNumber);
 
     void buildLOGRQ(string name);
 

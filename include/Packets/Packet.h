@@ -9,6 +9,7 @@
 #ifndef ASS3CLION_PACKET_H
 #define ASS3CLION_PACKET_H
 
+#endif //ASS3CLION_PACKET_H
 using namespace std;
 
 class Packet{
@@ -27,8 +28,9 @@ public:
     string getString();
     ~PacketWithString();
     char getLastByte();
-    virtual short getOpcode()=0;
-    virtual void setString(string& str)=0;
+//    virtual short getOpcode()=0;
+    virtual void setString(string& str);
+
 };
 
 class ACK: public Packet {
@@ -89,9 +91,9 @@ private:
     short opcode;
 public:
     DELRQ();
-    //~DELRQ();
+    ~DELRQ();
     DELRQ(string str);
-    short getOpcode();
+    virtual short getOpcode();
 };
 
 class DIRQ: public Packet{
@@ -162,4 +164,3 @@ public:
     short getOpcode();
 };
 
-#endif //ASS3CLION_PACKET_H

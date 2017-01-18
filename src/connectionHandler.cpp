@@ -1,8 +1,7 @@
-
-
-#include <Packets/DIRQ.h>
-#include <Packets/DISC.h>
-#include <Packets/ACK.h>
+//#include <Packets/Packet.h>
+//#include <Packets/DIRQ.h>
+//#include <Packets/DISC.h>
+//#include <Packets/ACK.h>
 #include "connectionHandler.h"
 
 using boost::asio::ip::tcp;
@@ -16,9 +15,6 @@ using std::string;
 ConnectionHandler::ConnectionHandler(string host, short port):
         host_(host), port_(port), io_service_(), socket_(io_service_), fileUpload(""), fileDownload(""),
         lastSent(-1),shouldTerminate(false){}
-
-ConnectionHandler::ConnectionHandler(): host_(""), port_(), io_service_(), socket_(io_service_), fileUpload(""), fileDownload(""),
-lastSent(-1),shouldTerminate(false){}
 
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -165,8 +161,8 @@ string &ConnectionHandler::getFileDownload()  {
 void ConnectionHandler::setFileDownload( string &fileDownload) {
     ConnectionHandler::fileDownload = fileDownload;
 }
-//check where adding one to block number
-void ConnectionHandler::sendData(int size,char buff[], short block) {
+
+void ConnectionHandler::sendData(int size,char buff[], short block) {///check where adding one to block number
     char twoBytes[2];//check if char*
     shortToBytes((short)3,twoBytes);//opCode send
     sendBytes(twoBytes,2);
@@ -175,7 +171,7 @@ void ConnectionHandler::sendData(int size,char buff[], short block) {
     shortToBytes(block+1,twoBytes);//block number send  ///!!!!!!!!!!!!!!!!!!!!!!
     sendBytes(twoBytes,2);
     sendBytes(buff,size);
-    delete[] twoBytes;
+//    delete[] twoBytes;
 }
 
 short ConnectionHandler::getLastSent()  {
@@ -185,3 +181,15 @@ short ConnectionHandler::getLastSent()  {
 void ConnectionHandler::setLastSent(short lastSent) {
     ConnectionHandler::lastSent = lastSent;
 }
+
+void ConnectionHandler::sendPacketData(ERROR &p) {
+    char* opcode;
+    shortToBytes(8,opcode);
+    char* errorCode;
+    shortToBytes(p.getErrorcode(),errorCode);
+    sendBytes(opcode,2);
+    sendBytes(errorCode,2);
+    sendFrameAscii(p.getStr(), '0');
+}
+
+//ConnectionHandler::ConnectionHandler(): host_(), port_(),io_service_(), socket_(io_service_), fileUpload(), fileDownload(), lastSent() {}

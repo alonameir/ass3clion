@@ -5,6 +5,7 @@
 #include <iostream>
 #include <boost/asio.hpp>
 #include "Packets/Packet.h"
+
 using boost::asio::ip::tcp;
 using namespace std;
 
@@ -23,9 +24,8 @@ public:
     short getLastSent() ;
     void setLastSent(short lastSent);
     ConnectionHandler(std::string host, short port);
-    ConnectionHandler();
     ~ConnectionHandler();
-
+//    ConnectionHandler();
 
     // Connect to the remote machine
     bool connect();
@@ -76,7 +76,7 @@ public:
 
     void setFileDownload( string &fileDownload);
 
-    void sendData(int, char buff[],short);
+    void sendData(int size,char buff[], short block);
 
 }; //class ConnectionHandler
 

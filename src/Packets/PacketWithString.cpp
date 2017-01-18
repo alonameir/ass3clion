@@ -1,7 +1,7 @@
 //
 // Created by romybu on 14/01/17.
 //
-#include <string>;
+#include <string>
 #include "Packets/Packet.h"
 
 PacketWithString::PacketWithString(): s(""), lastByte('0'){}

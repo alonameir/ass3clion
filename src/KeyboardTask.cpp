@@ -2,15 +2,14 @@
 // Created by alonam on 1/16/17.
 //
 
-#include <Packets/RRQ.h>
-#include <Packets/WRQ.h>
-#include <Packets/ACK.h>
-#include <Packets/DIRQ.h>
-#include <Packets/LOGRQ.h>
-#include <Packets/DELRQ.h>
-#include <Packets/DISC.h>
+//#include <Packets/Packet.h>
+//#include <Packets/WRQ.h>
+//#include <Packets/ACK.h>
+//#include <Packets/DIRQ.h>
+//#include <Packets/LOGRQ.h>
+//#include <Packets/DELRQ.h>
+//#include <Packets/DISC.h>
 #include "KeyboardTask.h"
-#include "Packets/Packet.h"
 
 using namespace std;
 
@@ -31,9 +30,9 @@ void KeyboardTask:: run(){
         else if (command.compare("WRQ")==0){
             buildWRQ(name);
         }
-        else if (command.compare("ACK")==0){
-            buildACK(name);
-        }
+//        else if (command.compare("ACK")==0){
+//            buildACK(name);
+//        }
         else if (command.compare("DIRQ")==0){
             connectionHandler.sendPacketDIRQ();
         }
@@ -85,7 +84,6 @@ void KeyboardTask::buildWRQ(string name){
     connectionHandler.setLastSent(2);
     connectionHandler.setFileDownload(name);
     connectionHandler.sendPacket(toSend);
-    //delete??
 }
 
 
@@ -103,6 +101,6 @@ void KeyboardTask::buildDELRQ(string name) {
 
 
 KeyboardTask::~KeyboardTask() {
-    //delete connectionHandler;
-    //delete _mutex;
+//    delete connectionHandler;
+//    delete _mutex;
 }
