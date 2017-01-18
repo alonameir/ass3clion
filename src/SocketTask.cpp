@@ -98,7 +98,7 @@ void  SocketTask:: handelWithError(){
 //    bytes={''};
     bool isErrorNum=handler.getBytes(bytes,2);
     string s("");
-    bool isErrorMsg=handler.getFrameAscii(s,'0');
+    bool isErrorMsg=handler.getFrameAscii(s,0);
     if(isErrorNum && isErrorMsg){
         cout<< "Error" <<s.substr (0,s.length()-2)  << endl;;
     }
@@ -108,7 +108,7 @@ void SocketTask:: handelWithBCAST(){
 //    bytes={''};
     bool isDelOrAddNum=handler.getBytes(bytes,1);
     string s("");
-    bool isDelOrAddNumMsg=handler.getFrameAscii(s,'0');
+    bool isDelOrAddNumMsg=handler.getFrameAscii(s,0);
     if(isDelOrAddNumMsg && isDelOrAddNum){
         short addDel=bytesToShort(bytes);
         if(addDel==0){

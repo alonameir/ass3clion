@@ -36,6 +36,6 @@ private:
     void printDirq();
 public:
     SocketTask(ConnectionHandler& c, boost::mutex* mutex);
-    ~SocketTask();
+//    ~SocketTask();
     void run();
 };

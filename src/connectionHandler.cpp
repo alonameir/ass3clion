@@ -118,7 +118,7 @@ void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD 
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
     bool firstSend=sendBytes(opcode,2);
-    bool secondSend=sendFrameAscii(frame,'0');
+    bool secondSend=sendFrameAscii(frame,0);
     if (!firstSend || !secondSend){ } /** DO SOMETHING?? **/
 }
 
@@ -189,7 +189,7 @@ void ConnectionHandler::sendPacketData(ERROR &p) {
     shortToBytes(p.getErrorcode(),errorCode);
     sendBytes(opcode,2);
     sendBytes(errorCode,2);
-    sendFrameAscii(p.getStr(), '0');
+    sendFrameAscii(p.getStr(), 0);
 }
 
 //ConnectionHandler::ConnectionHandler(): host_(), port_(),io_service_(), socket_(io_service_), fileUpload(), fileDownload(), lastSent() {}
