@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <boost/asio.hpp>
+#include "Packets/Packet.h"
 
 using boost::asio::ip::tcp;
 using namespace std;
@@ -57,11 +58,11 @@ public:
     void close();
 
     // Sends a packet of type PacketWithString
-    void sendPacket(PacketWithString p);
+    void sendPacket(PacketWithString& p);
 
     //sends a packet of type DISC
     void sendPacketDISC();
-    void sendPacketACK(ACK p);
+    void sendPacketACK(ACK& p);
 
     //sends a packet of type DIRQ
     void sendPacketDIRQ();
@@ -75,7 +76,7 @@ public:
 
     void setFileDownload( string &fileDownload);
 
-    void sendData(int, char& buff[],short);
+    void sendData(int size,char buff[], short block);
 
 }; //class ConnectionHandler
 

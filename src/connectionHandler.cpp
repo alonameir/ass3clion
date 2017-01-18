@@ -113,7 +113,7 @@ void shortToBytes(short num, char* bytesArr){
     bytesArr[1] = (num & 0xFF);
 }
 
-void ConnectionHandler:: sendPacket(PacketWithString p){/** THIS METHOD SHOULD BE BLOCKING **/
+void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD BE BLOCKING **/
     char* opcode;
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
@@ -136,7 +136,7 @@ void ConnectionHandler::sendPacketDISC() {
     if (!isSent){} /** DO SOMETHING?? **/
 }
 
-void ConnectionHandler::sendPacketACK(ACK p) {
+void ConnectionHandler::sendPacketACK(ACK& p) {
     char* opcode;
     shortToBytes(4,opcode);
     char* blockNum;
@@ -162,7 +162,7 @@ void ConnectionHandler::setFileDownload( string &fileDownload) {
     ConnectionHandler::fileDownload = fileDownload;
 }
 
-void ConnectionHandler::sendData(int size,char &buff[], short block) {///check where adding one to block number
+void ConnectionHandler::sendData(int size,char buff[], short block) {///check where adding one to block number
     char twoBytes[2];//check if char*
     shortToBytes((short)3,twoBytes);//opCode send
     sendBytes(twoBytes,2);
