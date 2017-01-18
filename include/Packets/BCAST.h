@@ -4,7 +4,6 @@
 
 #ifndef ASS3CLION_BCAST_H
 #define ASS3CLION_BCAST_H
-#include <vector>
 #include "Packet.h"
 
 class BCAST {
