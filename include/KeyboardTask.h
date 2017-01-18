@@ -20,7 +20,7 @@ private:
     string command;
     string name;
 public:
-    KeyboardTask(ConnectionHandler c, boost::mutex* mutex);
+    KeyboardTask(ConnectionHandler& c, boost::mutex* mutex);
     ~KeyboardTask();
     void run();
     void setCommandAndName(string line);

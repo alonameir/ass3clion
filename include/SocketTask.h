@@ -12,7 +12,7 @@
 
 class SocketTask{
 private:
-    ConnectionHandler handler;
+    ConnectionHandler& handler;
     boost::mutex * _mutex;
     char bytes[];
     short blockNumber;
@@ -33,7 +33,10 @@ private:
     void keepUploading(short currentBlock);
     void keepHanderWithData();
 public:
-    SocketTask(ConnectionHandler c, boost::mutex* mutex);
+    SocketTask(ConnectionHandler& c, boost::mutex* mutex);
+
+    SocketTask(ConnectionHandler &handler);
+
     ~SocketTask();
     void run();
 };

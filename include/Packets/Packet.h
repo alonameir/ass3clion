@@ -89,7 +89,7 @@ private:
     short opcode;
 public:
     DELRQ();
-    ~DELRQ();
+    //~DELRQ();
     DELRQ(string str);
     short getOpcode();
 };
