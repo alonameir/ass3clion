@@ -12,11 +12,12 @@
 
 using namespace std;
 
-SocketTask::SocketTask(ConnectionHandler c, boost::mutex* mutex) :
+SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
         handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
-        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){}
-
-~SocketTask();
+        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(){
+    //this->handler=c;
+}
+//SocketTask::SocketTask(ConnectionHandler &handler) : handler(handler) {}
 
 void SocketTask::run(){
     int i=1;
@@ -139,7 +140,7 @@ void SocketTask:: keepUploading(short currentBlock){
         handler.setFileUpload("");
         upLoadfinished=true;
         counterSend=0;
-        delete[] sending;
+        //delete[] sending;
     }
     else{
         char sending[512];
@@ -149,7 +150,7 @@ void SocketTask:: keepUploading(short currentBlock){
         }
         handler.sendData(512, sending, blockNumber);
         cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
-        delete[] sending;
+        //delete[] sending;
     }
 }
 
@@ -191,7 +192,7 @@ void SocketTask:: keepHanderWithData(){
     handler.sendPacketACK(toAck);
     if(handler.getLastSent()==1)
         cout<< "RRQ "<<handler.getFileDownload() << " " <<blockNumber<< endl;
-    delete [] addToFile;
+    //delete [] addToFile;
     if(packetSizeData<512){
         if(handler.getLastSent()==1)
             cout<< "RRQ "<<handler.getFileDownload() << " complete" << endl;
@@ -207,5 +208,7 @@ SocketTask::~SocketTask() {
     //delete handler;
     //delete _mutex;
 }
+
+
 
 

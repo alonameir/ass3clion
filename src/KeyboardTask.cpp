@@ -16,10 +16,10 @@ using namespace std;
 
 
 KeyboardTask::KeyboardTask
-        (ConnectionHandler c, boost::mutex* mutex): connectionHandler(c), _mutex(mutex), command(""), name("") {}
+        (ConnectionHandler& c, boost::mutex* mutex): connectionHandler(c), _mutex(mutex), command(""), name("") {}
 
 void KeyboardTask:: run(){
-    while (1) { /** maybe this should be an infinite loop?? **/
+    while (!connectionHandler.shouldTerminate) { /** maybe this should be an infinite loop?? **/
         /**read a line from input:**/
         string line;
         getline(cin, line);
