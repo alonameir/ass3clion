@@ -14,7 +14,8 @@ using std::string;
  
 ConnectionHandler::ConnectionHandler(string host, short port):
         host_(host), port_(port), io_service_(), socket_(io_service_), fileUpload(""), fileDownload(""),
-        lastSent(-1),shouldTerminate(false){}
+        lastSent(-1),shouldTerminate(false),mutex(){
+}
 
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -37,7 +38,16 @@ bool ConnectionHandler::connect() {
     return true;
 }
 
+void printArr (const char * buffer, unsigned int bytesToRead) {
+    for (int i = 0 ;i <bytesToRead ; ++i) {
+        cout<< (int)buffer[i] << ",";
+    }
+    cout << std::endl;
+}
+
 bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
+    cout<<"ReadG: ";
+    printArr(bytes,bytesToRead);
     size_t tmp = 0;
     boost::system::error_code error;
     try {
@@ -47,13 +57,18 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
         if(error)
             throw boost::system::system_error(error);
     } catch (std::exception& e) {
+        //exit(-1);
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
+
     return true;
 }
 
 bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
+    boost::mutex::scoped_lock lock(mutex);
+    cout << "Write: ";
+    printArr(bytes,bytesToWrite);
     int tmp = 0;
     boost::system::error_code error;
     try {
@@ -70,7 +85,8 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 }
 
 bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
+//    return getFrameAscii(line, '\n');
+    return getFrameAscii(line, '\0');
 }
 
 bool ConnectionHandler::sendLine(std::string& line) {
@@ -114,29 +130,30 @@ void shortToBytes(short num, char* bytesArr){
 }
 
 void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD BE BLOCKING **/
+//    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
-    bool firstSend=sendBytes(opcode,2);
-    bool secondSend=sendFrameAscii(frame,0);
-    if (!firstSend || !secondSend){ } /** DO SOMETHING?? **/
+    sendBytes(opcode,2);
+    sendFrameAscii(frame,0);
 }
 
 void ConnectionHandler::sendPacketDIRQ() {
+//    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(6,opcode);
-    bool isSent=sendBytes(opcode,2);
-    if (!isSent){} /** DO SOMETHING?? **/
+    sendBytes(opcode,2);
 }
 
 void ConnectionHandler::sendPacketDISC() {
+//    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(10,opcode);
-    bool isSent=sendBytes(opcode,2);
-    if (!isSent){} /** DO SOMETHING?? **/
+    sendBytes(opcode,2);
 }
 
 void ConnectionHandler::sendPacketACK(ACK& p) {
+//    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(4,opcode);
     char* blockNum;
@@ -163,6 +180,7 @@ void ConnectionHandler::setFileDownload( string &fileDownload) {
 }
 
 void ConnectionHandler::sendData(int size,char buff[], short block) {///check where adding one to block number
+    boost::mutex::scoped_lock lock(mutex);
     char twoBytes[2];//check if char*
     shortToBytes((short)3,twoBytes);//opCode send
     sendBytes(twoBytes,2);
@@ -183,6 +201,7 @@ void ConnectionHandler::setLastSent(short lastSent) {
 }
 
 void ConnectionHandler::sendPacketData(ERROR &p) {
+    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(8,opcode);
     char* errorCode;

@@ -48,8 +48,8 @@ void KeyboardTask:: run(){
         else{//which means the command is illegal
             cout << "Illegal command as input. Please type again." <<endl;
         }
-        name.clear();
-        command.clear();
+        name="";
+        command="";
     }
 }
 

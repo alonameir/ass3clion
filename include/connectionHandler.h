@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <boost/asio.hpp>
+#include <boost/thread/mutex.hpp>
 #include "Packets/Packet.h"
 
 using boost::asio::ip::tcp;
@@ -19,6 +20,7 @@ private:
     string fileUpload;
     string fileDownload;
     short lastSent;
+    boost::mutex mutex;
 public:
     bool shouldTerminate;
     short getLastSent() ;
