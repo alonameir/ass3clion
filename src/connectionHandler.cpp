@@ -66,7 +66,7 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 }
 
 bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
-    boost::mutex::scoped_lock lock(mutex);
+//    boost::mutex::scoped_lock lock(mutex);
     cout << "Write: ";
     printArr(bytes,bytesToWrite);
     int tmp = 0;
@@ -110,6 +110,7 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 }
 
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
+//    boost::mutex::scoped_lock lock(mutex);
     bool result=sendBytes(frame.c_str(),frame.length());
     if(!result) return false;
     return sendBytes(&delimiter,1);
@@ -135,12 +136,13 @@ void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD 
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
     sendBytes(opcode,2);
-    sendFrameAscii(frame,0);
+    sendFrameAscii(frame,'\0');
 }
 
 void ConnectionHandler::sendPacketDIRQ() {
 //    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
+    lastSent=6;
     shortToBytes(6,opcode);
     sendBytes(opcode,2);
 }
@@ -148,6 +150,7 @@ void ConnectionHandler::sendPacketDIRQ() {
 void ConnectionHandler::sendPacketDISC() {
 //    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
+    lastSent=10;
     shortToBytes(10,opcode);
     sendBytes(opcode,2);
 }
@@ -180,7 +183,7 @@ void ConnectionHandler::setFileDownload( string &fileDownload) {
 }
 
 void ConnectionHandler::sendData(int size,char buff[], short block) {///check where adding one to block number
-    boost::mutex::scoped_lock lock(mutex);
+//    boost::mutex::scoped_lock lock(mutex);
     char twoBytes[2];//check if char*
     shortToBytes((short)3,twoBytes);//opCode send
     sendBytes(twoBytes,2);
@@ -201,7 +204,7 @@ void ConnectionHandler::setLastSent(short lastSent) {
 }
 
 void ConnectionHandler::sendPacketData(ERROR &p) {
-    boost::mutex::scoped_lock lock(mutex);
+//    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(8,opcode);
     char* errorCode;

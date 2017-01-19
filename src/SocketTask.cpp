@@ -22,6 +22,7 @@ void SocketTask::run(){
     int i=1;
     while(i==1) {
 //        bytes = {''};
+        cout  << "i'm in sockettask run()"<< endl;
         bool isOpcodeGet = handler.getBytes(bytes, 2);
         if (isOpcodeGet) {
             short opCode = bytesToShort(bytes);
@@ -69,6 +70,7 @@ void printArrA (const char * buffer, unsigned int bytesToRead) {
 
 int SocketTask:: handelWithAck(){
 //    bytes={''};
+    cout<< "The OPCODE that was last sent is: " << handler.getLastSent() << endl;
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
     printArrA(bytes, 2);
     if(isACKBlockNumGet){
@@ -80,6 +82,9 @@ int SocketTask:: handelWithAck(){
                 cout<< "DISC " <<endl;
                 handler.shouldTerminate=true;
                 return 0;
+            }
+            if(handler.getLastSent()==2 && !upLoadfinished){
+                keepUploading(currentNumOfBlockACK);
             }
             return 1;
         }
@@ -104,14 +109,14 @@ int SocketTask:: handelWithAck(){
 void  SocketTask:: handelWithError(){
 //    bytes={''};
     bool isErrorNum=handler.getBytes(bytes,2);
-    cout << "is errornum "<<isErrorNum << endl;
-    printArrA(bytes,2);
+//    cout << "is errornum "<<isErrorNum << endl;
+//    printArrA(bytes,2);
     string s("");
-    bool isErrorMsg=handler.getFrameAscii(s,'\0');
-    cout << "is errormsg: "<<isErrorMsg << endl;
-
+    bool isErrorMsg=handler.getFrameAscii(s,'0');
+//    cout << "is errormsg: "<<isErrorMsg << endl;
+//    cout << "the error msg is: " << s << endl;
     if(isErrorNum && isErrorMsg){
-        cout<< "Error" <<s.substr (0,s.length()-2)  << endl;
+        cout<< "Error " <<s.substr (0,s.length()-1)  << endl;
     }
 }
 
@@ -182,7 +187,7 @@ void SocketTask::handelWithDATA() {
         if(blockNumber== currentNumOfBlockACK-1) {
             if (handler.getLastSent() == 6) {
                 if (blockNumber == 1) {
-                    dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
+                    //dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
                     counterSend = 0;
                 }
                 keepHanderWithData();
@@ -208,7 +213,7 @@ void SocketTask:: keepHanderWithData(){
         counterSend++;
     }
     if (handler.getLastSent()==1)
-        fwrite(addToFile,1, sizeof(addToFile),dataFile);
+        fwrite(addToFile,1, packetSizeData,dataFile);
     else{
         dirqData.append(addToFile);
     }
@@ -229,7 +234,7 @@ void SocketTask::printDirq() {
     int numOfFiles=1;
     string temp("");
     int i=0;
-    while( i < sizeof(dirqData)) {
+    while( i < dirqData.size()) {
         if (dirqData.at(i) == '\0') {
             cout << temp << " " << numOfFiles << endl;
             temp.clear();
