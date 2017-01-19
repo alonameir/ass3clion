@@ -69,6 +69,7 @@ void printArrA (const char * buffer, unsigned int bytesToRead) {
 
 int SocketTask:: handelWithAck(){
 //    bytes={''};
+    cout<< "The OPCODE that was last sent is: " << handler.getLastSent() << endl;
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
     printArrA(bytes, 2);
     if(isACKBlockNumGet){
@@ -104,14 +105,14 @@ int SocketTask:: handelWithAck(){
 void  SocketTask:: handelWithError(){
 //    bytes={''};
     bool isErrorNum=handler.getBytes(bytes,2);
-    cout << "is errornum "<<isErrorNum << endl;
-    printArrA(bytes,2);
+//    cout << "is errornum "<<isErrorNum << endl;
+//    printArrA(bytes,2);
     string s("");
-    bool isErrorMsg=handler.getFrameAscii(s,'\0');
-    cout << "is errormsg: "<<isErrorMsg << endl;
-
+    bool isErrorMsg=handler.getFrameAscii(s,'0');
+//    cout << "is errormsg: "<<isErrorMsg << endl;
+//    cout << "the error msg is: " << s << endl;
     if(isErrorNum && isErrorMsg){
-        cout<< "Error" <<s.substr (0,s.length()-2)  << endl;
+        cout<< "Error " <<s.substr (0,s.length()-1)  << endl;
     }
 }
 
