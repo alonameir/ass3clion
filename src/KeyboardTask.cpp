@@ -48,15 +48,15 @@ void KeyboardTask:: run(){
         else{//which means the command is illegal
             cout << "Illegal command as input. Please type again." <<endl;
         }
-        command="";
-        name="";
+        name.clear();
+        command.clear();
     }
 }
 
 void KeyboardTask::setCommandAndName(string line){
     int counter=0;
     for (int i = 0; i < line.size(); i = i + 1) {
-        char c = line.at( i);
+        char c = line.at(i);
         if (c != ' ') {
             if (counter == 0)
                 command.push_back(c);
