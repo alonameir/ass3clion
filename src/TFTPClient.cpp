@@ -28,8 +28,8 @@ int main (int argc, char *argv[]) {
     cout << "I'm Connected" << endl;
 
     boost::mutex mutex;
-    KeyboardTask task1(*connectionHandler, &mutex);
-    SocketTask task2(*connectionHandler, &mutex);
+    KeyboardTask task1(&ConnectionHandler::operator(),*connectionHandler, &mutex);
+    SocketTask task2(&ConnectionHandler::operator(),*connectionHandler, &mutex);
 
 
     boost::thread th1(boost::bind(&KeyboardTask::run, &task1));
