@@ -5,6 +5,7 @@
 #include <string>
 //#include <connectionHandler.h>
 #include <SocketTask.h>
+
 #include <boost/thread/pthread/mutex.hpp>
 
 
@@ -69,7 +70,6 @@ void printArrA (const char * buffer, unsigned int bytesToRead) {
 }
 
 int SocketTask:: handelWithAck(){
-//    bytes={''};
     cout<< "The OPCODE that was last sent is: " << handler.getLastSent() << endl;
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
     printArrA(bytes, 2);
@@ -83,7 +83,7 @@ int SocketTask:: handelWithAck(){
                 handler.shouldTerminate=true;
                 return 0;
             }
-            if(handler.getLastSent()==2 && !upLoadfinished){
+            else if(handler.getLastSent()==2 && !upLoadfinished){
                 keepUploading(currentNumOfBlockACK);
             }
             return 1;
@@ -100,46 +100,43 @@ int SocketTask:: handelWithAck(){
         }
         else{
             ERROR tosend(8,"Invalid ACK");
-            handler.sendPacketData(tosend);
+            handler.sendPacketError(tosend);
+            return 1;
         }
     }
     return 1;
 }
 
 void  SocketTask:: handelWithError(){
-//    bytes={''};
     bool isErrorNum=handler.getBytes(bytes,2);
-//    cout << "is errornum "<<isErrorNum << endl;
-//    printArrA(bytes,2);
     string s("");
     bool isErrorMsg=handler.getFrameAscii(s,'0');
-//    cout << "is errormsg: "<<isErrorMsg << endl;
-//    cout << "the error msg is: " << s << endl;
     if(isErrorNum && isErrorMsg){
         cout<< "Error " <<s.substr (0,s.length()-1)  << endl;
     }
 }
 
 void SocketTask:: handelWithBCAST(){
-//    bytes={''};
+    short addDel;
     bool isDelOrAddNum=handler.getBytes(bytes,1);
-    string s("");
-    bool isDelOrAddNumMsg=handler.getFrameAscii(s,0);
-    if(isDelOrAddNumMsg && isDelOrAddNum){
-        short addDel=bytesToShort(bytes);
-        if(addDel==0){
-            cout<< "BCAST del" <<s.substr (0,s.length()-2) << endl;
+    if(isDelOrAddNum) {
+        addDel=bytesToShort(bytes);
+        string s("");
+        bool isDelOrAddNumMsg=handler.getFrameAscii(s,0);
+        if(isDelOrAddNumMsg){
+            if(addDel==0){
+                cout<< "BCAST del" <<s.substr (0,s.length()-2) << endl;
+            }
+            else if(addDel==1){
+                cout<< "BCAST add" <<s.substr (0,s.length()-2) << endl;
+            }
         }
-        else if(addDel==1){
-            cout<< "BCAST add" <<s.substr (0,s.length()-2) << endl;
-        }
-
     }
 }
 
 void SocketTask:: keepUploading(short currentBlock){
-    if (currentBlock==1){
-        FILE * file=fopen(handler.getFileUpload().c_str(),"rb");
+    if (currentBlock==0){
+        FILE * file=fopen(handler.getFileUpload(),"rb");
         fseek (file , 0 , SEEK_END);
         sizeToSend=ftell(file);///tells the size of the file
         rewind(file);
@@ -157,7 +154,7 @@ void SocketTask:: keepUploading(short currentBlock){
         handler.sendData(size, sending, blockNumber);
         cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
         cout<< "WRQ "<<handler.getFileUpload() << " complete"<< endl;
-        handler.setFileUpload("");
+        handler.setFileUpload(nullptr);
         upLoadfinished=true;
         counterSend=0;
 //        delete[] sending;
@@ -170,38 +167,35 @@ void SocketTask:: keepUploading(short currentBlock){
         }
         handler.sendData(512, sending, blockNumber);
         cout<< "RRQ "<<handler.getFileUpload() << " " <<blockNumber<< endl;
-//        delete[] sending;
     }
 }
 
 void SocketTask::handelWithDATA() {
-//    bytes={''};
-    bool isPacketSize=handler.getBytes(bytes,2);
-//    bytes={''};
-    bool isBlockNum=handler.getBytes(bytes,2);
-//    bytes={''};
-    bool isDataGet=handler.getBytes(bytes,2);
-    if((isBlockNum && isPacketSize) && isDataGet ){
-        packetSizeData=bytesToShort(bytes);
-        blockNumber=bytesToShort(bytes);
-        if(blockNumber== currentNumOfBlockACK-1) {
-            if (handler.getLastSent() == 6) {
-                if (blockNumber == 1) {
-                    //dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
-                    counterSend = 0;
+    bool isPacketSize = handler.getBytes(bytes, 2);
+    if (isPacketSize)packetSizeData = bytesToShort(bytes);
+    bool isBlockNum = handler.getBytes(bytes, 2);
+    if (isBlockNum) blockNumber = bytesToShort(bytes);
+    if (isBlockNum && isPacketSize) {
+        bool isDataGet = handler.getBytes(bytes, (unsigned int) packetSizeData);
+        if (isDataGet) {
+            if (blockNumber == currentNumOfBlockACK - 1) {
+                if (handler.getLastSent() == 6) {
+                    if (blockNumber == 1) {
+                        //dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
+                        counterSend = 0;
+                    }
+                    keepHanderWithData();
+                } else if (handler.getLastSent() == 1) {
+                    if (blockNumber) {
+                        dataFile = fopen(handler.getFileDownload(), "ab");
+                        counterSend = 0;
+                    }
+                    keepHanderWithData();
                 }
-                keepHanderWithData();
-            } else if (handler.getLastSent() == 1) {
-                if (blockNumber) {
-                    dataFile = fopen(handler.getFileDownload().c_str(), "ab");
-                    counterSend = 0;
-                }
-                keepHanderWithData();
+            } else {
+                ERROR tosend(8, "Invalid DATA");
+                handler.sendPacketError(tosend);
             }
-        }
-        else{
-            ERROR tosend(8,"Invalid DATA");
-            handler.sendPacketData(tosend);
         }
     }
 }
@@ -215,6 +209,7 @@ void SocketTask:: keepHanderWithData(){
     if (handler.getLastSent()==1)
         fwrite(addToFile,1, packetSizeData,dataFile);
     else{
+        cout << "i'm before appand"<< endl;
         dirqData.append(addToFile);
     }
     ACK toSend(blockNumber);

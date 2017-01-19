@@ -132,7 +132,7 @@ void shortToBytes(short num, char* bytesArr){
 
 void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD BE BLOCKING **/
 //    boost::mutex::scoped_lock lock(mutex);
-    char* opcode;
+    char* opcode=new char[2];
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
     sendBytes(opcode,2);
@@ -166,21 +166,6 @@ void ConnectionHandler::sendPacketACK(ACK& p) {
     }
 
 
-string &ConnectionHandler::getFileUpload()  {
-    return fileUpload;
-}
-
-void ConnectionHandler::setFileUpload (string fileUpload) {
-    ConnectionHandler::fileUpload = fileUpload;
-}
-
-string &ConnectionHandler::getFileDownload()  {
-    return fileDownload;
-}
-
-void ConnectionHandler::setFileDownload( string &fileDownload) {
-    ConnectionHandler::fileDownload = fileDownload;
-}
 
 void ConnectionHandler::sendData(int size,char buff[], short block) {///check where adding one to block number
 //    boost::mutex::scoped_lock lock(mutex);
@@ -203,7 +188,7 @@ void ConnectionHandler::setLastSent(short lastSent) {
     ConnectionHandler::lastSent = lastSent;
 }
 
-void ConnectionHandler::sendPacketData(ERROR &p) {
+void ConnectionHandler::sendPacketError(ERROR &p) {
 //    boost::mutex::scoped_lock lock(mutex);
     char* opcode;
     shortToBytes(8,opcode);
@@ -212,6 +197,22 @@ void ConnectionHandler::sendPacketData(ERROR &p) {
     sendBytes(opcode,2);
     sendBytes(errorCode,2);
     sendFrameAscii(p.getStr(), 0);
+}
+
+char *ConnectionHandler::getFileUpload()  {
+    return fileUpload;
+}
+
+void ConnectionHandler::setFileUpload(char *fileUpload) {
+    ConnectionHandler::fileUpload = fileUpload;
+}
+
+char *ConnectionHandler::getFileDownload()  {
+    return fileDownload;
+}
+
+void ConnectionHandler::setFileDownload(char *fileDownload) {
+    ConnectionHandler::fileDownload = fileDownload;
 }
 
 //ConnectionHandler::ConnectionHandler(): host_(), port_(),io_service_(), socket_(io_service_), fileUpload(), fileDownload(), lastSent() {}

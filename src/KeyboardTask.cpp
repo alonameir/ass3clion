@@ -75,14 +75,14 @@ void KeyboardTask::buildRRQ(string name){
      * **/
     RRQ toSend(name);
     connectionHandler.setLastSent(1);
-    connectionHandler.setFileDownload(name);
+    connectionHandler.setFileDownload(changeToChar(name));
     connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildWRQ(string name){
     WRQ toSend(name);
     connectionHandler.setLastSent(2);
-    connectionHandler.setFileUpload(name);
+    connectionHandler.setFileUpload(changeToChar(name));
     connectionHandler.sendPacket(toSend);
 }
 
@@ -103,4 +103,12 @@ void KeyboardTask::buildDELRQ(string name) {
 KeyboardTask::~KeyboardTask() {
 //    delete connectionHandler;
 //    delete _mutex;
+}
+
+char * KeyboardTask:: changeToChar(string s){
+    char * name=new char [s.length()];
+    for(int i=0; i<s.length(); i++){
+        name[i]=s.at(i);
+    }
+    return name;
 }

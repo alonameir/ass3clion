@@ -29,7 +29,7 @@ public:
 //    void buildACK(string blockNumber);
 
     void buildLOGRQ(string name);
-
+    char * changeToChar(string s);
     void buildDELRQ(string name);
 
 };

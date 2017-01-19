@@ -17,8 +17,8 @@ private:
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
 	tcp::socket socket_;
-    string fileUpload;
-    string fileDownload;
+    char * fileUpload;
+    char * fileDownload;
     short lastSent;
     boost::mutex mutex;
 public:
@@ -65,19 +65,18 @@ public:
     //sends a packet of type DISC
     void sendPacketDISC();
     void sendPacketACK(ACK& p);
-    void sendPacketData(ERROR& p);
+    void sendPacketError(ERROR &p);
 
     //sends a packet of type DIRQ
     void sendPacketDIRQ();
 
+    char *getFileUpload() ;
 
-    string &getFileUpload();
+    void setFileUpload(char *fileUpload);
 
-    void setFileUpload( string fileUpload);
+    char *getFileDownload();
 
-    string &getFileDownload();
-
-    void setFileDownload( string &fileDownload);
+    void setFileDownload(char *fileDownload);
 
     void sendData(int size,char buff[], short block);
 
