@@ -136,7 +136,7 @@ void ConnectionHandler:: sendPacket(PacketWithString& p){/** THIS METHOD SHOULD 
     shortToBytes(p.getOpcode(),opcode);
     string frame=p.getString();
     sendBytes(opcode,2);
-    sendFrameAscii(frame,0);
+    sendFrameAscii(frame,'\0');
 }
 
 void ConnectionHandler::sendPacketDIRQ() {

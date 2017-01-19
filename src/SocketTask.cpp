@@ -22,6 +22,7 @@ void SocketTask::run(){
     int i=1;
     while(i==1) {
 //        bytes = {''};
+        cout  << "i'm in sockettask run()"<< endl;
         bool isOpcodeGet = handler.getBytes(bytes, 2);
         if (isOpcodeGet) {
             short opCode = bytesToShort(bytes);
@@ -81,6 +82,9 @@ int SocketTask:: handelWithAck(){
                 cout<< "DISC " <<endl;
                 handler.shouldTerminate=true;
                 return 0;
+            }
+            if(handler.getLastSent()==2 && !upLoadfinished){
+                keepUploading(currentNumOfBlockACK);
             }
             return 1;
         }
@@ -183,7 +187,7 @@ void SocketTask::handelWithDATA() {
         if(blockNumber== currentNumOfBlockACK-1) {
             if (handler.getLastSent() == 6) {
                 if (blockNumber == 1) {
-                    dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
+                    //dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
                     counterSend = 0;
                 }
                 keepHanderWithData();
@@ -209,7 +213,7 @@ void SocketTask:: keepHanderWithData(){
         counterSend++;
     }
     if (handler.getLastSent()==1)
-        fwrite(addToFile,1, sizeof(addToFile),dataFile);
+        fwrite(addToFile,1, packetSizeData,dataFile);
     else{
         dirqData.append(addToFile);
     }
@@ -230,7 +234,7 @@ void SocketTask::printDirq() {
     int numOfFiles=1;
     string temp("");
     int i=0;
-    while( i < sizeof(dirqData)) {
+    while( i < dirqData.size()) {
         if (dirqData.at(i) == '\0') {
             cout << temp << " " << numOfFiles << endl;
             temp.clear();

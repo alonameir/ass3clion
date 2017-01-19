@@ -75,14 +75,14 @@ void KeyboardTask::buildRRQ(string name){
      * **/
     RRQ toSend(name);
     connectionHandler.setLastSent(1);
-    connectionHandler.setFileUpload(name);
+    connectionHandler.setFileDownload(name);
     connectionHandler.sendPacket(toSend);
 }
 
 void KeyboardTask::buildWRQ(string name){
     WRQ toSend(name);
     connectionHandler.setLastSent(2);
-    connectionHandler.setFileDownload(name);
+    connectionHandler.setFileUpload(name);
     connectionHandler.sendPacket(toSend);
 }
 
