@@ -12,7 +12,7 @@ using namespace std;
 
 SocketTask::SocketTask(ConnectionHandler& c, boost::mutex* mutex) :
         handler(c), _mutex(mutex), bytes(), blockNumber(0), toSend(),upLoadfinished(false),
-        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(0),dataFile(), dirqData(""){
+        sizeToSend(0),counterSend(0), packetSizeData(0), currentNumOfBlockACK(-1),dataFile(), dirqData(""){
 }
 
 
@@ -60,9 +60,17 @@ void  SocketTask:: shortToBytes(short num, char* bytesArr)
     bytesArr[1] = (num & 0xFF);
 }
 
+void printArrA (const char * buffer, unsigned int bytesToRead) {
+    for (int i = 0 ;i <bytesToRead ; ++i) {
+        cout<< (int)buffer[i] << ",";
+    }
+    cout << std::endl;
+}
+
 int SocketTask:: handelWithAck(){
 //    bytes={''};
     bool isACKBlockNumGet=handler.getBytes(bytes,2);
+    printArrA(bytes, 2);
     if(isACKBlockNumGet){
         currentNumOfBlockACK=bytesToShort(bytes);
         cout<< "ACK " << currentNumOfBlockACK <<endl;
@@ -96,10 +104,14 @@ int SocketTask:: handelWithAck(){
 void  SocketTask:: handelWithError(){
 //    bytes={''};
     bool isErrorNum=handler.getBytes(bytes,2);
+    cout << "is errornum "<<isErrorNum << endl;
+    printArrA(bytes,2);
     string s("");
-    bool isErrorMsg=handler.getFrameAscii(s,0);
+    bool isErrorMsg=handler.getFrameAscii(s,'\0');
+    cout << "is errormsg: "<<isErrorMsg << endl;
+
     if(isErrorNum && isErrorMsg){
-        cout<< "Error" <<s.substr (0,s.length()-2)  << endl;;
+        cout<< "Error" <<s.substr (0,s.length()-2)  << endl;
     }
 }
 
