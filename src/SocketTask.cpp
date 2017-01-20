@@ -245,7 +245,7 @@ void SocketTask::printDirq() {
     string temp("");
     int i=0;
     while( i < dirqData.size()) {
-        if (dirqData.at(i) == '3') {
+        if (dirqData.at(i) == '0') {
             cout << temp << " " << numOfFiles << endl;
             temp="";
             numOfFiles++;
