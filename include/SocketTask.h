@@ -32,7 +32,7 @@ private:
     void handelWithBCAST();
     void handelWithDATA();
     void keepUploading(short currentBlock);
-    void keepHanderWithData();
+    void keepHanderWithData(char& newBytes);
     void printDirq();
 public:
     SocketTask(ConnectionHandler& c, boost::mutex* mutex);

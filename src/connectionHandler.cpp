@@ -157,12 +157,16 @@ void ConnectionHandler::sendPacketDISC() {
 
 void ConnectionHandler::sendPacketACK(ACK& p) {
 //    boost::mutex::scoped_lock lock(mutex);
-    char* opcode;
+    char* opcode=new char();
     shortToBytes(4,opcode);
-    char* blockNum;
+    char* blockNum= new char();
+    cout << "block num in sendack "<< p.getBlockNumber() << endl;
+    cout << "opcode is " << opcode << endl;
     shortToBytes(p.getBlockNumber(),blockNum);
+    cout << "block num is " << blockNum <<endl;
     sendBytes(opcode,2);
     sendBytes(blockNum,2);
+    cout<< "i sent packet ack "<< endl;
     }
 
 

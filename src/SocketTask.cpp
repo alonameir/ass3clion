@@ -172,26 +172,35 @@ void SocketTask:: keepUploading(short currentBlock){
 
 void SocketTask::handelWithDATA() {
     bool isPacketSize = handler.getBytes(bytes, 2);
-    if (isPacketSize)packetSizeData = bytesToShort(bytes);
+    if (isPacketSize) packetSizeData = bytesToShort(bytes);
+    cout <<"Packet size is "<< packetSizeData << endl;
     bool isBlockNum = handler.getBytes(bytes, 2);
     if (isBlockNum) blockNumber = bytesToShort(bytes);
+    cout << "1blocknumber is " <<  blockNumber << endl;
     if (isBlockNum && isPacketSize) {
-        bool isDataGet = handler.getBytes(bytes, (unsigned int) packetSizeData);
+        short *temp = &packetSizeData;
+        //cout << "tmp is: " << *temp <<endl;
+        //cout << "1packetsize data is: " << packetSizeData << endl;
+
+        char* newBytes=new char();
+        bool isDataGet = handler.getBytes(newBytes, *temp);
+        cout << "handler.get last sent: " << handler.getLastSent() <<endl;
+        cout << "i put the data in bytes" << endl;
         if (isDataGet) {
-            if (blockNumber == currentNumOfBlockACK - 1) {
-                if (handler.getLastSent() == 6) {
-                    if (blockNumber == 1) {
-                        //dataFile = fopen("allTheFilesInServer.txt", "ab");//TODO: check if this is currect
-                        counterSend = 0;
-                    }
-                    keepHanderWithData();
-                } else if (handler.getLastSent() == 1) {
-                    if (blockNumber) {
-                        dataFile = fopen(handler.getFileDownload(), "ab");
-                        counterSend = 0;
-                    }
-                    keepHanderWithData();
+            cout << handler.getLastSent() <<endl;
+            if (handler.getLastSent() == 6) {
+                cout << "i'm in lastSent" << endl;
+                keepHanderWithData(*newBytes);
+            }
+            //cout << handler.getLastSent() <<endl;
+            else if (blockNumber == currentNumOfBlockACK + 1 && handler.getLastSent() == 1) {
+                cout << "i am in this" << endl;
+                if (blockNumber == 1) {
+                    cout << "i creat a file" << endl;
+                    dataFile = fopen(handler.getFileDownload(), "ab");
+                    cout << "datafile is created" <<endl;
                 }
+                keepHanderWithData(*newBytes);
             } else {
                 ERROR tosend(8, "Invalid DATA");
                 handler.sendPacketError(tosend);
@@ -200,43 +209,48 @@ void SocketTask::handelWithDATA() {
     }
 }
 
-void SocketTask:: keepHanderWithData(){
-    char addToFile[packetSizeData];
-    for(int i=0;i<packetSizeData; i++){
-        addToFile[i]=bytes[counterSend];
-        counterSend++;
+void SocketTask:: keepHanderWithData(char& newBytes){
+
+    if (handler.getLastSent()==1) {
+        cout << "im before fwrite " << endl;
+        fwrite(&newBytes, 1, packetSizeData, dataFile);
+        cout << "im after fwrite " << endl;
     }
-    if (handler.getLastSent()==1)
-        fwrite(addToFile,1, packetSizeData,dataFile);
     else{
         cout << "i'm before appand"<< endl;
-        dirqData.append(addToFile);
+        dirqData.append(&newBytes); //TODO CHECK DIRQ
     }
     ACK toSend(blockNumber);
+    cout << "im after acktosend"<<endl;
+//    cout << "blocknumber: " << blockNumber<< endl;
+//    cout << "packetsize: " << packetSizeData<< endl;
+
     handler.sendPacketACK(toSend);
     if(packetSizeData<512){
-        if(handler.getLastSent()==1)
-            cout<< "RRQ "<<handler.getFileDownload() << " complete" << endl;
+        if(handler.getLastSent()==1) {
+            cout << "RRQ " << handler.getFileDownload() << " complete" << endl;
+            fclose(dataFile);
+        }
         else{
+            cout<< "im tring to print"<< endl;
             printDirq();
         }
-        fclose(dataFile);
-    }
 
+    }
 }
 
 void SocketTask::printDirq() {
+    cout<< "print dirq: " << dirqData<< endl;
     int numOfFiles=1;
     string temp("");
     int i=0;
     while( i < dirqData.size()) {
-        if (dirqData.at(i) == '\0') {
+        if (dirqData.at(i) == '3') {
             cout << temp << " " << numOfFiles << endl;
-            temp.clear();
+            temp="";
             numOfFiles++;
         } else {
-            char a = dirqData.at(i);
-            temp.append(1, a);
+            temp.append(1, dirqData.at(i) );
             }
         i++;
     }
